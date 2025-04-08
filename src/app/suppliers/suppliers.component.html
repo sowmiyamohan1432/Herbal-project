@@ -1,0 +1,417 @@
+<!-- suppliers.component.html -->
+<div class="suppliers-container">
+  <div class="suppliers-header">
+    <h1>Suppliers</h1>
+    <p>Manage your Suppliers</p>
+  </div>
+  
+
+  
+  <!-- Main Content Section -->
+  <div class="main-content">
+    <div class="content-header">
+      <h2>All your Suppliers</h2>
+      <button class="btn-add" (click)="toggleForm()">
+        <i class="fa fa-plus"></i> Add
+      </button>
+    </div>
+    
+    <!-- Table Controls -->
+    <div class="table-controls">
+      <div class="entries-control">
+        Show 
+        <select [(ngModel)]="entriesPerPage" (change)="loadSuppliers()">
+          <option value="10">10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select> 
+        entries
+      </div>
+      
+      <div class="export-controls">
+        <button class="btn-export" (click)="exportCSV()">
+          <i class="fa fa-file-csv"></i> Export CSV
+        </button>
+        <button class="btn-export" (click)="exportExcel()">
+          <i class="fa fa-file-excel"></i> Export Excel
+        </button>
+        <button class="btn-export" (click)="exportPDF()">
+          <i class="fa fa-file-pdf"></i> Export PDF
+        </button>
+      </div>
+      
+      <div class="search-control">
+        <input type="text" [(ngModel)]="searchTerm" placeholder="Search..." (keyup.enter)="applyFilters()">
+      </div>
+    </div>
+   <!-- Suppliers Table -->
+<div class="table-responsive">
+  <table class="suppliers-table">
+    <thead>
+      <tr>
+        <th>Action</th>
+        <th (click)="sortBy('contactId')">Contact ID</th>
+        <th (click)="sortBy('businessName')">Business Name</th>
+        <th (click)="sortBy('firstName')">Name</th>
+        <th (click)="sortBy('email')">Email</th>
+        <th (click)="sortBy('taxNumber')">Tax Number</th>
+        <th (click)="sortBy('payTerm')">Pay Term</th>
+        <th (click)="sortBy('openingBalance')">Opening Balance</th>
+        <th (click)="sortBy('city')">Address</th>
+        <th (click)="sortBy('mobile')">Mobile</th>
+        <th (click)="sortBy('landline')">Landline</th>
+        <th (click)="sortBy('alternateContact')">Alternate Contact</th>
+        <th (click)="sortBy('assignedTo')">Assigned To</th>
+        <th (click)="sortBy('prefix')">Prefix</th>
+        <th (click)="sortBy('middleName')">Middle Name</th>
+        <th (click)="sortBy('dob')">Date of Birth</th>
+        <th (click)="sortBy('addressLine1')">Address Line 1</th>
+        <th (click)="sortBy('addressLine2')">Address Line 2</th>
+        <th (click)="sortBy('state')">State</th>
+        <th (click)="sortBy('country')">Country</th>
+        <th (click)="sortBy('zipCode')">Zip Code</th>
+        <th (click)="sortBy('contactType')">Contact Type</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let supplier of suppliersList">
+        <td>
+          <div class="dropdown">
+            <button class="btn-dropdown">Actions</button>
+            <div class="dropdown-content">
+              <a (click)="editSupplier(supplier)">Edit</a>
+              <a (click)="deleteSupplier(supplier.id)">Delete</a>
+            </div>
+          </div>
+        </td>
+        <td>{{ supplier.contactId }}</td>
+        <td>{{ !supplier.isIndividual ? supplier.businessName : '' }}</td>
+        <td>{{ supplier.isIndividual ? (supplier.firstName + ' ' + (supplier.lastName || '')) : '' }}</td>
+        <td>{{ supplier.email }}</td>
+        <td>{{ supplier.taxNumber }}</td>
+        <td>{{ supplier.payTerm }} Days</td>
+        <td>₹ {{ supplier.openingBalance || '0.00' }}</td>
+        <td>{{ supplier.city }}</td>
+        <td>{{ supplier.mobile }}</td>
+        <td>{{ supplier.landline }}</td>
+        <td>{{ supplier.alternateContact }}</td>
+        <td>{{ supplier.assignedTo }}</td>
+        <td>{{ supplier.prefix }}</td>
+        <td>{{ supplier.middleName }}</td>
+        <td>{{ supplier.dob | date }}</td>
+        <td>{{ supplier.addressLine1 }}</td>
+        <td>{{ supplier.addressLine2 }}</td>
+        <td>{{ supplier.state }}</td>
+        <td>{{ supplier.country }}</td>
+        <td>{{ supplier.zipCode }}</td>
+        <td>{{ supplier.contactType }}</td>
+      </tr>
+      <tr *ngIf="suppliersList.length === 0">
+        <td colspan="22" class="no-data">No suppliers found</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+  </div>
+  
+  <!-- Supplier Form Modal -->
+  <div class="modal" [class.show]="showForm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>{{ editingSupplierId ? 'Edit Supplier' : 'Add Supplier' }}</h2>
+        <span class="close" (click)="toggleForm()">&times;</span>
+      </div>
+      
+      <div class="modal-body">
+        <form (ngSubmit)="saveSupplier()">
+          <!-- Contact Type Dropdown -->
+          <div class="form-group">
+            <label for="contactType">Contact Type:</label>
+            <select [(ngModel)]="supplierData.contactType" name="contactType" id="contactType" (change)="onContactTypeChange()">
+              <option value="Customer">Customer</option>
+              <option value="Supplier">Supplier</option>
+              <option value="Both">Both Supplier and Customer</option>
+            </select>
+          </div>
+          
+          <!-- Individual or Business Toggle -->
+          <div class="form-group toggle-group">
+            <label>Contact is:</label>
+            <div class="toggle-buttons">
+              <label class="toggle-btn" [class.active]="isIndividual">
+                <input type="radio" name="isIndividual" [(ngModel)]="isIndividual" [value]="true"> 
+                Individual
+              </label>
+              <label class="toggle-btn" [class.active]="!isIndividual">
+                <input type="radio" name="isIndividual" [(ngModel)]="isIndividual" [value]="false"> 
+                Business
+              </label>
+            </div>
+          </div>
+          
+         <!-- Common Fields -->
+  <div class="form-group">
+    <label for="contactId">Contact ID:</label>
+    <input 
+      type="text" 
+      [(ngModel)]="supplierData.contactId" 
+      name="contactId" 
+      id="contactId" 
+      placeholder="Auto-generated" 
+      readonly>
+  </div>
+          
+          <!-- Individual Specific Fields -->
+          <div *ngIf="isIndividual" class="individual-fields">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="prefix">Prefix:</label>
+                <select [(ngModel)]="supplierData.prefix" name="prefix" id="prefix">
+                  <option value="">Select</option>
+                  <option value="Mr">Mr</option>
+                  <option value="Mrs">Mrs</option>
+                  <option value="Ms">Ms</option>
+                  <option value="Dr">Dr</option>
+                </select>
+              </div>
+              
+              <div class="form-group required">
+                <label for="firstName">First Name:</label>
+                <input 
+                  type="text" 
+                  [(ngModel)]="supplierData.firstName" 
+                  name="firstName" 
+                  id="firstName" 
+                  required 
+                  placeholder="Enter First Name" />
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="middleName">Middle Name:</label>
+                <input 
+                  type="text" 
+                  [(ngModel)]="supplierData.middleName" 
+                  name="middleName" 
+                  id="middleName" 
+                  placeholder="Enter Middle Name (Optional)" />
+              </div>
+              
+              <div class="form-group">
+                <label for="lastName">Last Name:</label>
+                <input 
+                  type="text" 
+                  [(ngModel)]="supplierData.lastName" 
+                  name="lastName" 
+                  id="lastName" 
+                  placeholder="Enter Last Name" />
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="dob">Date of Birth:</label>
+              <input 
+                type="date" 
+                [(ngModel)]="supplierData.dob" 
+                name="dob" 
+                id="dob" />
+            </div>
+          </div>
+          
+          <!-- Business Specific Fields -->
+          <div *ngIf="!isIndividual" class="business-fields">
+            <div class="form-group required">
+              <label for="businessName">Business Name:</label>
+              <input 
+                type="text" 
+                [(ngModel)]="supplierData.businessName" 
+                name="businessName" 
+                id="businessName" 
+                required
+                placeholder="Enter Business Name" />
+            </div>
+          </div>
+          
+          <!-- Contact Information -->
+          <h3>Contact Information</h3>
+          <div class="form-row">
+            <div class="form-group required">
+              <label for="mobile">Mobile:</label>
+              <input 
+                type="text" 
+                [(ngModel)]="supplierData.mobile" 
+                name="mobile" 
+                id="mobile" 
+                required 
+                placeholder="Enter Mobile Number" />
+            </div>
+            
+            <div class="form-group">
+              <label for="landline">Landline:</label>
+              <input 
+                type="text" 
+                [(ngModel)]="supplierData.landline" 
+                name="landline" 
+                id="landline" 
+                placeholder="Enter Landline Number" />
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="alternateContact">Alternate Contact:</label>
+              <input 
+                type="text" 
+                [(ngModel)]="supplierData.alternateContact" 
+                name="alternateContact" 
+                id="alternateContact" 
+                placeholder="Enter Alternate Contact Number" />
+            </div>
+            
+            <div class="form-group">
+              <label for="email">Email:</label>
+              <input 
+                type="email" 
+                [(ngModel)]="supplierData.email" 
+                name="email" 
+                id="email" 
+                placeholder="Enter Email Address" />
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="assignedTo">Assigned To:</label>
+            <input 
+              type="text" 
+              [(ngModel)]="supplierData.assignedTo" 
+              name="assignedTo" 
+              id="assignedTo" 
+              placeholder="Enter Name of the Person Assigned" />
+          </div>
+          
+          <!-- More Information Accordion -->
+          <div class="accordion">
+            <div class="accordion-header" (click)="toggleMoreInfo()">
+              <h3>More Information</h3>
+              <span class="accordion-icon">{{ showMoreInfo ? '−' : '+' }}</span>
+            </div>
+            
+            <div class="accordion-content" [class.show]="showMoreInfo">
+              <!-- Tax Information -->
+              <h4>Tax Information</h4>
+              <div class="form-group">
+                <label for="taxNumber">Tax Number:</label>
+                <input 
+                  type="text" 
+                  [(ngModel)]="supplierData.taxNumber" 
+                  name="taxNumber" 
+                  id="taxNumber" 
+                  placeholder="Enter Tax Number" />
+              </div>
+              
+              <!-- Financial Information -->
+              <h4>Financial Details</h4>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="openingBalance">Opening Balance:</label>
+                  <input 
+                    type="number" 
+                    [(ngModel)]="supplierData.openingBalance" 
+                    name="openingBalance" 
+                    id="openingBalance" 
+                    placeholder="0" />
+                </div>
+                
+                <div class="form-group">
+                  <label for="payTerm">Pay Term:</label>
+                  <select [(ngModel)]="supplierData.payTerm" name="payTerm" id="payTerm">
+                    <option value="0">Immediate</option>
+                    <option value="15">15 Days</option>
+                    <option value="30">30 Days</option>
+                    <option value="45">45 Days</option>
+                    <option value="60">60 Days</option>
+                    <option value="90">90 Days</option>
+                  </select>
+                </div>
+              </div>
+              
+              <!-- Address Information -->
+              <h4>Address</h4>
+              <div class="form-group">
+                <label for="addressLine1">Address Line 1:</label>
+                <input 
+                  type="text" 
+                  [(ngModel)]="supplierData.addressLine1" 
+                  name="addressLine1" 
+                  id="addressLine1" 
+                  placeholder="Enter Address Line 1" />
+              </div>
+              
+              <div class="form-group">
+                <label for="addressLine2">Address Line 2:</label>
+                <input 
+                  type="text" 
+                  [(ngModel)]="supplierData.addressLine2" 
+                  name="addressLine2" 
+                  id="addressLine2" 
+                  placeholder="Enter Address Line 2" />
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="city">City:</label>
+                  <input 
+                    type="text" 
+                    [(ngModel)]="supplierData.city" 
+                    name="city" 
+                    id="city" 
+                    placeholder="Enter City" />
+                </div>
+                
+                <div class="form-group">
+                  <label for="state">State:</label>
+                  <input 
+                    type="text" 
+                    [(ngModel)]="supplierData.state" 
+                    name="state" 
+                    id="state" 
+                    placeholder="Enter State" />
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="country">Country:</label>
+                  <input 
+                    type="text" 
+                    [(ngModel)]="supplierData.country" 
+                    name="country" 
+                    id="country" 
+                    placeholder="Enter Country" />
+                </div>
+                
+                <div class="form-group">
+                  <label for="zipCode">Zip Code:</label>
+                  <input 
+                    type="text" 
+                    [(ngModel)]="supplierData.zipCode" 
+                    name="zipCode" 
+                    id="zipCode" 
+                    placeholder="Enter Zip Code" />
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Form Actions -->
+          <div class="form-actions">
+            <button type="button" class="btn-cancel" (click)="toggleForm()">Cancel</button>
+            <button type="submit" class="btn-save">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

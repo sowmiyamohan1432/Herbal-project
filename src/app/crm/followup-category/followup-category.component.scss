@@ -1,0 +1,82 @@
+/* src/app/components/followup-category/followup-category.component.scss */
+.followup-category-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .add-button {
+    padding: 10px 20px;
+    margin-top: 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .add-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .form-container {
+    margin-top: 20px;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-field {
+    margin-bottom: 15px;
+  }
+  
+  .form-field label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .form-field input,
+  .form-field textarea {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  
+  .save-btn,
+  .close-btn {
+    padding: 8px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .close-btn {
+    background-color: #dc3545;
+  }
+  
+  .save-btn:hover {
+    background-color: #218838;
+  }
+  
+  .close-btn:hover {
+    background-color: #c82333;
+  }
+  
+  .followup-category-list {
+    margin-top: 20px;
+    text-align: left;
+    width: 80%;
+  }
+  

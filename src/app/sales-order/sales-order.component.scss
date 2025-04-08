@@ -1,0 +1,103 @@
+/* Main container styling */
+.container-fluid {
+    padding: 15px;
+  }
+  
+  /* Card styling */
+  .card {
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    background-color: #fff;
+  }
+  
+  .card-body {
+    padding: 15px;
+  }
+  
+  /* Header styling */
+  h3 {
+    color: #333;
+    font-weight: 500;
+    margin-bottom: 15px;
+    margin-top: 5%;
+  }
+  
+  /* Button styling */
+  .btn-primary {
+    background-color: #6366f1;
+    border-color: #6366f1;
+  }
+  
+  .btn-primary:hover {
+    background-color: #4f46e5;
+    border-color: #4f46e5;
+  }
+  
+  .export-buttons {
+    justify-content: center;
+    gap: 0.5rem; // optional if you're not using Bootstrap's spacing utilities
+    flex-wrap: wrap;
+    margin-top: -4%;
+    margin-left: -2%;
+  
+    button {
+      min-width: 120px;
+      text-align: center;
+      i {
+        margin-right: 5px;
+      }
+    }
+  }
+  
+
+  
+  .form-select:focus, .form-control:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.25);
+  }
+ 
+  
+  
+
+  /* Sort icon styling */
+  .fa-sort {
+    color: #9ca3af;
+    margin-left: 5px;
+    font-size: 0.8rem;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .d-flex {
+      flex-direction: column;
+    }
+    
+    .d-flex .ms-auto {
+      margin-top: 10px;
+      margin-left: 0 !important;
+    }
+    
+    .btn-sm {
+      margin-bottom: 5px;
+    }
+  }
+  
+  /* Pagination styling */
+  .pagination {
+    margin-bottom: 0;
+  }
+  
+  .page-link {
+    color: #6366f1;
+  }
+  
+  .page-item.active .page-link {
+    background-color: #6366f1;
+    border-color: #6366f1;
+  }
+  
+  /* No data message styling */
+  .text-center {
+    color: #2a55aa;
+  }
+  

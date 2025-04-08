@@ -1,0 +1,47 @@
+<div class="container">
+    <!-- Tax Rates -->
+    <div class="box">
+      <h3>All your tax rates</h3>
+      <button (click)="toggleTaxRateForm()">+ Add</button>
+  
+      <!-- Tax Rate Form -->
+      <div *ngIf="showTaxRateForm" class="popup-form">
+        <h4>Add Tax Rate</h4>
+        <form (ngSubmit)="addTaxRate()">
+          <label>Name:*</label>
+          <input type="text" [(ngModel)]="taxRate.name" name="rateName" required />
+          <label>Tax Rate %:*</label>
+          <input type="number" [(ngModel)]="taxRate.percentage" name="ratePercent" required />
+          <label>
+            <input type="checkbox" [(ngModel)]="taxRate.forTaxGroupOnly" name="forGroup" />
+            For tax group only
+          </label>
+          <button type="submit">Save</button>
+          <button type="button" (click)="toggleTaxRateForm()">Close</button>
+        </form>
+      </div>
+    </div>
+  
+    <!-- Tax Groups -->
+    <div class="box">
+      <h3>Tax groups (Combination of multiple taxes)</h3>
+      <button (click)="toggleTaxGroupForm()">+ Add</button>
+  
+      <!-- Tax Group Form -->
+      <div *ngIf="showTaxGroupForm" class="popup-form">
+        <h4>Add Tax Group</h4>
+        <form (ngSubmit)="addTaxGroup()">
+          <label>Name:*</label>
+          <input type="text" [(ngModel)]="taxGroup.name" name="groupName" required />
+          <label>Sub taxes:*</label>
+          <select multiple [(ngModel)]="taxGroup.subTaxes" name="subTaxes">
+            <option *ngFor="let tax of taxRates" [value]="tax.name">
+              {{ tax.name }} ({{ tax.percentage }}%)
+            </option>
+          </select>
+          <button type="submit">Save</button>
+          <button type="button" (click)="toggleTaxGroupForm()">Close</button>
+        </form>
+      </div>
+    </div>
+  </div>

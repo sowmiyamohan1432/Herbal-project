@@ -1,0 +1,181 @@
+<div *ngIf="user" class="user-form-container">
+    <h2>Edit User</h2>
+  
+    <form [formGroup]="editUserForm" (ngSubmit)="onSubmit()">
+      <!-- BASIC INFO -->
+      <div class="user-basic-container">
+        <h3>Basic Info</h3>
+        <label>Prefix:</label>
+        <select formControlName="prefix">
+          <option value="Mr">Mr</option>
+          <option value="Mrs">Mrs</option>
+          <option value="Miss">Miss</option>
+        </select>
+  
+        <label>First Name:*</label>
+        <input type="text" formControlName="firstName" required />
+  
+        <label>Last Name:</label>
+        <input type="text" formControlName="lastName" />
+  
+        <label>Email:*</label>
+        <input type="email" formControlName="email" required />
+  
+        <div class="checkbox-group">
+          <label><input type="checkbox" formControlName="isActive" /> Is Active?</label>
+          <label><input type="checkbox" formControlName="enableServicePin" /> Enable Service Staff Pin</label>
+        </div>
+      </div>
+  
+      <!-- ROLES & PERMISSIONS -->
+      <div class="roles-permissions-container">
+        <h3>Roles & Permissions</h3>
+  
+        <label><input type="checkbox" formControlName="allowLogin" /> Allow Login</label>
+  
+        <label>Role:</label>
+        <select formControlName="role">
+          <option value="Admin">Admin</option>
+          <option value="Cashier">Cashier</option>
+          <option value="Staff">Staff</option>
+        </select>
+  
+        <label><input type="checkbox" formControlName="allLocations" /> All Locations</label>
+  
+        <div *ngIf="!editUserForm.get('allLocations')?.value">
+          <label><input type="checkbox" /> Herbally Touch (BL0001)</label>
+        </div>
+  
+        <div *ngIf="editUserForm.get('allowLogin')?.value">
+          <label>Username:</label>
+          <input type="text" formControlName="username" />
+  
+          <label>Password:</label>
+          <input type="password" formControlName="password" />
+  
+          <label>Confirm Password:</label>
+          <input type="password" formControlName="confirmPassword" />
+        </div>
+      </div>
+  
+      <!-- SALES INFO -->
+      <div class="sales-info-container">
+        <h3>Sales</h3>
+  
+        <label>Sales Commission Percentage (%):</label>
+        <input type="number" formControlName="salesCommission" />
+  
+        <label>Max Sales Discount Percent:</label>
+        <input type="number" formControlName="maxDiscount" />
+  
+        <label><input type="checkbox" formControlName="allowSelectedContacts" /> Allow Selected Contacts</label>
+  
+        <div *ngIf="editUserForm.get('allowSelectedContacts')?.value">
+          <label>Select Contacts:</label>
+          <select formControlName="selectedContact">
+            <option value="contact1">Contact 1</option>
+            <option value="contact2">Contact 2</option>
+            <option value="contact3">Contact 3</option>
+          </select>
+        </div>
+      </div>
+  
+      <!-- MORE INFORMATION -->
+      <div class="more-info-container">
+        <h3>More Information</h3>
+  
+        <label>Date of Birth:</label>
+        <input type="date" formControlName="dob" />
+  
+        <label>Gender:</label>
+        <select formControlName="gender">
+          <option value="">Please Select</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+  
+        <label>Marital Status:</label>
+        <input type="text" formControlName="maritalStatus" />
+  
+        <label>Blood Group:</label>
+        <input type="text" formControlName="bloodGroup" />
+  
+        <label>Mobile Number:</label>
+        <input type="tel" formControlName="mobileNumber" />
+  
+        <label>Alternate Contact Number:</label>
+        <input type="tel" formControlName="alternateContactNumber" />
+  
+        <label>Family Contact Number:</label>
+        <input type="tel" formControlName="familyContactNumber" />
+  
+        <label>Facebook Link:</label>
+        <input type="url" formControlName="facebookLink" />
+  
+        <label>Twitter Link:</label>
+        <input type="url" formControlName="twitterLink" />
+  
+        <label>Social Media 1:</label>
+        <input type="url" formControlName="socialMedia1" />
+  
+        <label>Social Media 2:</label>
+        <input type="url" formControlName="socialMedia2" />
+  
+        <label>Custom Field 1:</label>
+        <input type="text" formControlName="customField1" />
+  
+        <label>Custom Field 2:</label>
+        <input type="text" formControlName="customField2" />
+  
+        <label>Custom Field 3:</label>
+        <input type="text" formControlName="customField3" />
+  
+        <label>Custom Field 4:</label>
+        <input type="text" formControlName="customField4" />
+  
+        <label>Guardian Name:</label>
+        <input type="text" formControlName="guardianName" />
+  
+        <label>ID Proof Name:</label>
+        <input type="text" formControlName="idProofName" />
+  
+        <label>ID Proof Number:</label>
+        <input type="text" formControlName="idProofNumber" />
+  
+        <label>Permanent Address:</label>
+        <input type="text" formControlName="permanentAddress" />
+  
+        <label>Current Address:</label>
+        <input type="text" formControlName="currentAddress" />
+      </div>
+  
+      <!-- BANK DETAILS -->
+      <div class="bank-details-container">
+        <h3>Bank Details</h3>
+  
+        <label>Account Holder's Name:</label>
+        <input type="text" formControlName="accountHolderName" />
+  
+        <label>Account Number:</label>
+        <input type="text" formControlName="accountNumber" />
+  
+        <label>Bank Name:</label>
+        <input type="text" formControlName="bankName" />
+  
+        <label>Bank Identifier Code:</label>
+        <input type="text" formControlName="bankIdentifierCode" />
+  
+        <label>Branch:</label>
+        <input type="text" formControlName="branch" />
+  
+        <label>Tax Payer ID:</label>
+        <input type="text" formControlName="taxPayerId" />
+      </div>
+  
+      <!-- SUBMIT -->
+      <div class="submit-button">
+        <button type="submit" [disabled]="!editUserForm.valid">Submit</button>
+      </div>
+    </form>
+  </div>

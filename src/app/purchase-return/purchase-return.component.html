@@ -1,0 +1,67 @@
+<div class="purchase-return-container">
+    <h2>Purchase Return</h2>
+  
+    <div class="filters-section">
+      <h3>Filters</h3>
+      <h4>All Purchase Returns</h4>
+    </div>
+  
+    <div class="table-controls">
+      <div class="left-controls">
+        <span>Show</span>
+        <select class="entries-select">
+          <option>25</option>
+          <option>50</option>
+          <option>100</option>
+        </select>
+        <span>entries</span>
+        <button class="export-btn">Export CSV</button>
+        <button class="export-btn">Export Excel</button>
+        <button class="export-btn">Print</button>
+        <button class="export-btn">Column visibility</button>
+        <button class="export-btn">Export PDF</button>
+      </div>
+      <div class="right-controls">
+        <input type="text" placeholder="Search..." class="search-input">
+      </div>
+    </div>
+  
+    <div class="table-responsive">
+      <table class="purchase-return-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Reference No</th>
+            <th>Parent Purchase</th>
+            <th>Location</th>
+            <th>Supplier</th>
+            <th>Payment Status</th>
+            <th>Grand Total</th>
+            <th>Payment due</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="9" class="no-data">No data available in table</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="9">
+              <div class="table-footer">
+                <div class="footer-left">
+                  <span>Total:</span>
+                </div>
+                <div class="footer-right">
+                  <span>Showing 0 to 0 of 0 entries</span>
+                  <button class="page-btn" disabled>Previous</button>
+                  <button class="page-btn" disabled>Next</button>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>

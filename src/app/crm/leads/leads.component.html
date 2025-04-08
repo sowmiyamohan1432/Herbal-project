@@ -1,0 +1,170 @@
+<div class="p-4">
+    <button class="btn btn-primary" (click)="openPopup()">Add +</button>
+  
+    <div *ngIf="showPopup" class="popup-form mt-3">
+      <h4>Add a new contact</h4>
+  
+      <form [formGroup]="leadForm">
+        <!-- Contact Type -->
+        <div class="mb-3">
+          <label class="form-label">Contact Type: *</label>
+          <select class="form-select" formControlName="contact_type">
+            <option value="Lead">Lead</option>
+          </select>
+        </div>
+  
+        <!-- Person Type -->
+        <div class="mb-3">
+          <label class="form-label">Individual / Business</label><br />
+          <input type="radio" formControlName="contact_person_type" value="individual" (change)="onPersonTypeChange()" /> Individual
+          <input type="radio" class="ms-3" formControlName="contact_person_type" value="business" (change)="onPersonTypeChange()" /> Business
+        </div>
+  
+        <!-- Contact ID -->
+        <div class="mb-3">
+          <label class="form-label">Contact ID:</label>
+          <input type="text" class="form-control" formControlName="contact_id" placeholder="Leave empty to autogenerate" />
+        </div>
+  
+        <!-- Individual Fields -->
+        <ng-container *ngIf="showIndividualFields">
+          <div class="mb-3">
+            <label class="form-label">Prefix:</label>
+            <select class="form-select" formControlName="prefix">
+              <option value="Mr">Mr</option>
+              <option value="Mrs">Mrs</option>
+              <option value="Miss">Miss</option>
+            </select>
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label">First Name: *</label>
+            <input type="text" class="form-control" formControlName="first_name" />
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label">Middle Name:</label>
+            <input type="text" class="form-control" formControlName="middle_name" />
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label">Last Name:</label>
+            <input type="text" class="form-control" formControlName="last_name" />
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label">Date of Birth:</label>
+            <input type="date" class="form-control" formControlName="dob" />
+          </div>
+        </ng-container>
+  
+        <!-- Business Fields -->
+        <ng-container *ngIf="showBusinessFields">
+          <div class="mb-3">
+            <label class="form-label">Business Name: *</label>
+            <input type="text" class="form-control" formControlName="business_name" />
+          </div>
+        </ng-container>
+  
+        <!-- Common Fields -->
+        <div class="mb-3">
+          <label class="form-label">Mobile: *</label>
+          <input type="text" class="form-control" formControlName="mobile" />
+        </div>
+  
+        <div class="mb-3">
+          <label class="form-label">Alternate contact number:</label>
+          <input type="text" class="form-control" formControlName="alternate_contact" />
+        </div>
+  
+        <div class="mb-3">
+          <label class="form-label">Landline:</label>
+          <input type="text" class="form-control" formControlName="landline" />
+        </div>
+  
+        <div class="mb-3">
+          <label class="form-label">Email:</label>
+          <input type="email" class="form-control" formControlName="email" />
+        </div>
+  
+        <div class="mb-3">
+          <label class="form-label">Source:</label>
+          <select class="form-select" formControlName="source">
+            <option value="">Please Select</option>
+            <option value="Online">Online</option>
+            <option value="Referral">Referral</option>
+          </select>
+        </div>
+  
+        <div class="mb-3">
+          <label class="form-label">Life Stage:</label>
+          <select class="form-select" formControlName="lifestage">
+            <option value="">Please Select</option>
+            <option value="New">New</option>
+            <option value="Engaged">Engaged</option>
+          </select>
+        </div>
+  
+        <div class="mb-3">
+          <label class="form-label">Assigned To: *</label>
+          <select class="form-select" formControlName="assigned_to">
+            <option value="Arjun">Arjun</option>
+            <option value="Sethunath">Sethunath</option>
+            <option value="test">test</option>
+          </select>
+        </div>
+  
+        <div class="text-end">
+          <button type="button" class="btn btn-secondary me-2" (click)="closePopup()">Close</button>
+          <button type="button" class="btn btn-success" (click)="saveLead()">Save</button>
+        </div>
+      </form>
+    </div>
+  
+    <!-- Table -->
+    <table border="1" width="100%" style="border-collapse: collapse; margin-top: 20px;">
+      <thead>
+        <tr>
+          <th>Action</th>
+          <th>Contact ID</th>
+          <th>Name</th>
+          <th>Mobile</th>
+          <th>Email</th>
+          <th>Source</th>
+          <th>Last Follow Up</th>
+          <th>Upcoming Follow Up</th>
+          <th>Life Stage</th>
+          <th>Assigned To</th>
+          <th>Address</th>
+          <th>Tax Number</th>
+          <th>Added On</th>
+          <th>Custom Field 1</th>
+          <th>Custom Field 2</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let lead of leads">
+          <td>
+            <button (click)="editLead(lead)">Edit</button>
+            <button (click)="deleteLead(lead.id)">Delete</button>
+          </td>
+          <td>{{ lead.contact_id || '-' }}</td>
+          <td>
+            {{ lead.business_name || (lead.prefix + ' ' + lead.first_name + ' ' + lead.middle_name + ' ' + lead.last_name) }}
+          </td>
+          <td>{{ lead.mobile }}</td>
+          <td>{{ lead.email }}</td>
+          <td>{{ lead.source || '-' }}</td>
+          <td>{{ lead.last_follow_up || '-' }}</td>
+          <td>{{ lead.upcoming_follow_up || '-' }}</td>
+          <td>{{ lead.lifestage || '-' }}</td>
+          <td>{{ lead.assigned_to }}</td>
+          <td>{{ lead.address || '-' }}</td>
+          <td>{{ lead.tax_number || '-' }}</td>
+          <td>{{ lead.created_at?.toDate() | date: 'short' }}</td>
+          <td>{{ lead.custom_field_1 || '-' }}</td>
+          <td>{{ lead.custom_field_2 || '-' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

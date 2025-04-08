@@ -1,0 +1,54 @@
+<div class="order-view-container">
+    <div class="header">
+      <h2>Purchase Order Details</h2>
+      <button routerLink="/purchase-order" class="back-button">Back to List</button>
+    </div>
+  
+    <div *ngIf="isLoading" class="loading">Loading order details...</div>
+    
+    <div *ngIf="error" class="error">{{ error }}</div>
+  
+    <div *ngIf="order && !isLoading" class="order-details">
+      <div class="detail-row">
+        <span class="detail-label">Reference No:</span>
+        <span class="detail-value">{{ order.referenceNo || 'N/A' }}</span>
+      </div>
+      
+      <div class="detail-row">
+        <span class="detail-label">Date:</span>
+        <span class="detail-value">{{ (order.createdAt?.toDate() | date) || 'N/A' }}</span>
+      </div>
+      
+      <div class="detail-row">
+        <span class="detail-label">Business Location:</span>
+        <span class="detail-value">{{ order.businessLocation || 'N/A' }}</span>
+      </div>
+      
+      <div class="detail-row">
+        <span class="detail-label">Supplier:</span>
+        <span class="detail-value">{{ order.supplier || 'N/A' }}</span>
+      </div>
+      
+      <div class="detail-row">
+        <span class="detail-label">Status:</span>
+        <span class="detail-value">{{ order.status || 'N/A' }}</span>
+      </div>
+      
+      <div class="detail-row">
+        <span class="detail-label">Shipping Status:</span>
+        <span class="detail-value">{{ order.shippingStatus || 'N/A' }}</span>
+      </div>
+      
+      <div class="detail-row">
+        <span class="detail-label">Shipping Charges:</span>
+        <span class="detail-value">{{ order.shippingCharges | currency }}</span>
+      </div>
+      
+      <div class="detail-row">
+        <span class="detail-label">Added By:</span>
+        <span class="detail-value">{{ order.addedBy || 'N/A' }}</span>
+      </div>
+  
+      <!-- Add more fields as needed -->
+    </div>
+  </div>

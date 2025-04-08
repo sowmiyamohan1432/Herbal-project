@@ -1,0 +1,31 @@
+body {
+    background-color: #f0f2f5;
+    padding: 20px;
+  }
+  .card {
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+  }
+  .btn-warning {
+    background-color: #ffc107;
+    color: #000;
+  }
+  .btn-primary {
+    background-color: #052acf;
+    
+  }
+  h2 {
+    margin-bottom: 20px;
+    font-weight: 600;
+    margin-top: 5%;
+  }
+  .form-control {
+    border-radius: 4px;
+  }
+  .input-group-text {
+    background-color: white;
+  }
+  .table th {
+    background-color: #f8f9fa;
+  }

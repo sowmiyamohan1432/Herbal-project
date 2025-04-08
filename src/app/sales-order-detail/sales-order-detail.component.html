@@ -1,0 +1,18 @@
+<div *ngIf="sale$ | async as sale; else loading">
+    <h3>Sale Details: {{ sale.invoiceNo }}</h3>
+    <div class="card">
+      <div class="card-body">
+        <p><strong>Customer:</strong> {{ sale.customer }}</p>
+        <p><strong>Sale Date:</strong> {{ sale.saleDate | date: 'shortDate' }}</p>
+        <p><strong>Status:</strong> {{ sale.status }}</p>
+        <p><strong>Shipping Status:</strong> {{ sale.shippingStatus }}</p>
+        <p><strong>Payment Amount:</strong> {{ sale.paymentAmount | currency }}</p>
+        <p><strong>Balance:</strong> {{ sale.balance | currency }}</p>
+        <button class="btn btn-secondary" routerLink="/sales-order">Back to List</button>
+      </div>
+    </div>
+  </div>
+  <ng-template #loading>
+    <p>Loading sale details...</p>
+  </ng-template>
+  

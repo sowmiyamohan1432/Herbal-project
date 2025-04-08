@@ -1,0 +1,65 @@
+<!-- Add + Button -->
+<button (click)="openForm = true" class="add-btn">Add +</button>
+
+<!-- Search Box -->
+<input type="text" [(ngModel)]="searchText" placeholder="Search..." class="search-box" />
+
+<!-- Popup Form -->
+<div *ngIf="openForm" class="popup-form">
+  <h2>{{ isEdit ? 'Edit Type of Service' : 'Add Type of Service' }}</h2>
+  <form (ngSubmit)="saveService()" #serviceForm="ngForm">
+    <label>Name:*</label>
+    <input type="text" [(ngModel)]="service.name" name="name" required />
+
+    <label>Description:</label>
+    <textarea [(ngModel)]="service.description" name="description"></textarea>
+
+    <label>Location:</label>
+    <input type="text" [(ngModel)]="service.location" name="location" />
+
+    <label>Price Group:</label>
+    <input type="text" [(ngModel)]="service.priceGroup" name="priceGroup" />
+
+    <label>Packing Charge Type:</label>
+    <select [(ngModel)]="service.packingChargeType" name="packingChargeType">
+      <option value="Fixed">Fixed</option>
+      <option value="Variable">Variable</option>
+    </select>
+
+    <label>Packing Charge:</label>
+    <input type="number" [(ngModel)]="service.packingCharge" name="packingCharge" />
+
+    <label>
+      <input type="checkbox" [(ngModel)]="service.enableCustomFields" name="enableCustomFields" />
+      Enable custom fields
+    </label>
+
+    <div class="form-actions">
+      <button type="submit">{{ isEdit ? 'Update' : 'Save' }}</button>
+      <button type="button" (click)="closeForm()">Close</button>
+    </div>
+  </form>
+</div>
+
+<!-- Data Table -->
+<table class="service-table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Packing Charge</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of filteredServices()">
+      <td>{{ item.name }}</td>
+      <td>{{ item.description }}</td>
+      <td>{{ item.packingCharge }}</td>
+      <td>
+        <button (click)="editService(item)">Edit</button>
+        <button (click)="deleteService(item.id)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

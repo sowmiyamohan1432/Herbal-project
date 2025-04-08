@@ -1,0 +1,91 @@
+<div class="purchase-order-container">
+  <h1>Purchase Order</h1>
+
+  <!-- Add Purchase Order Button -->
+  <div class="add-order-btn-container">
+    <button class="add-order-button" (click)="addPurchaseOrder()">+ Add Purchase Order</button>
+  </div>
+
+  <div class="filter-section">
+    <h2>Filters</h2>
+    <div class="filter-controls">
+      <div class="entries-control">
+        <span>Show</span>
+        <select [(ngModel)]="entriesPerPage" (change)="onEntriesChange()">
+          <option value="25">25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+        <span>entries</span>
+      </div>
+
+      <div class="export-buttons">
+        <button class="export-button" (click)="exportCSV()">Export CSV</button>
+        <button class="export-button" (click)="exportExcel()">Export Excel</button>
+        <button class="export-button" (click)="print()">Print</button>
+        <button class="export-button" (click)="toggleColumnVisibility()">Column visibility</button>
+        <button class="export-button" (click)="exportPDF()">Export PDF</button>
+      </div>
+
+      <div class="search-box">
+        <input type="text" placeholder="Search..." (input)="onSearch($event)" />
+      </div>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Action</th>
+        <th>Date</th>
+        <th>Reference No</th>
+        <th>Location</th>
+        <th>Supplier</th>
+        <th>Status</th>
+        <th>Added By</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of filteredOrders.slice((currentPage - 1) * entriesPerPage, currentPage * entriesPerPage)">
+        <td>
+          <div class="action-dropdown">
+            <button class="action-button" (click)="toggleActionMenu(order.id, $event)">Actions</button>
+            <div class="action-menu" *ngIf="activeActionMenu === order.id">
+              <button (click)="viewOrder(order)">View</button>
+              <button (click)="printOrder(order)">Print</button>
+              <button (click)="downloadPdf(order)">Download pdf</button>
+              <button (click)="editOrder(order)">Edit</button>
+              <button (click)="deleteOrder(order)">Delete</button>
+              <button (click)="editShipping(order)">Edit Shipping</button>
+              <button (click)="sendNotification(order)">Send Notification</button>
+            </div>
+          </div>
+        </td>
+        <td>{{ order.date }}</td>
+        <td>{{ order.referenceNo }}</td>
+        <td>{{ order.businessLocation }}</td>
+        <td>{{ order.supplier }}</td>
+        <td>
+          <span class="status-badge" [ngClass]="{
+            'status-pending': order.status === 'Pending',
+            'status-shipped': order.status === 'Shipped',
+            'status-delivered': order.status === 'Delivered'
+          }">
+            {{ order.status }}
+          </span>
+        </td>
+        <td>{{ order.addedBy }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="pagination-info">
+    <span>Showing {{ (currentPage - 1) * entriesPerPage + 1 }} to {{ Math.min(currentPage * entriesPerPage, filteredOrders.length) }} of {{ filteredOrders.length }} entries</span>
+  </div>
+
+  <div class="pagination-controls">
+    <button (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
+    <span>Page {{ currentPage }} of {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+  </div>
+</div>

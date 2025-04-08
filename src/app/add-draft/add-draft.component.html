@@ -1,0 +1,199 @@
+<!-- draft.component.html -->
+<h2>Add Draft</h2>
+
+<form [formGroup]="draftForm" (ngSubmit)="onSubmit()" class="p-4 border rounded shadow-sm bg-light" style="border-color: #e1eaea !important;">
+  <!-- Container 1: Customer Information -->
+  <div class="border p-3 mb-4 rounded bg-white" style="border-color: #e1eaea !important;">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="customer" class="form-label">Customer:*</label>
+        <input type="text" id="customer" formControlName="customer" placeholder="Enter Customer Name" title="Customer Name" 
+               class="form-control" required style="border-color: #e1eaea !important;">
+      </div>
+      
+      <div class="col-md-6 mb-3">
+        <label for="payTerm" class="form-label">Pay Term:</label>
+        <select id="payTerm" formControlName="payTerm" class="form-select" title="Select Pay Term" style="border-color: #e1eaea !important;">
+          <option value="">Please Select</option>
+          <option value="7">7 Days</option>
+          <option value="15">15 Days</option>
+          <option value="30">30 Days</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="billingAddress" class="form-label">Billing Address:</label>
+        <input type="text" id="billingAddress" formControlName="billingAddress" placeholder="Walk-In Customer" title="Billing Address" 
+               class="form-control" readonly style="border-color: #e1eaea !important;">
+      </div>
+      
+      <div class="col-md-6 mb-3">
+        <label for="shippingAddress" class="form-label">Shipping Address:</label>
+        <input type="text" id="shippingAddress" formControlName="shippingAddress" placeholder="Walk-In Customer" title="Shipping Address" 
+               class="form-control" readonly style="border-color: #e1eaea !important;">
+      </div>
+    </div>
+  </div>
+
+  <!-- Container 2: Order Information -->
+  <div class="border p-3 mb-4 rounded bg-white" style="border-color: #e1eaea !important;">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="saleDate" class="form-label">Sale Date:*</label>
+        <input type="datetime-local" id="saleDate" formControlName="saleDate" title="Select Sale Date" 
+               class="form-control" required style="border-color: #e1eaea !important;">
+      </div>
+      
+      <div class="col-md-6 mb-3">
+        <label for="invoiceNo" class="form-label">Invoice No.:</label>
+        <input type="text" id="invoiceNo" formControlName="invoiceNo" placeholder="Leave blank to auto-generate" title="Invoice Number" 
+               class="form-control" style="border-color: #e1eaea !important;">
+      </div>
+    </div>
+    
+    <div class="mb-3">
+      <label for="salesOrder" class="form-label">Sales Order:</label>
+      <input type="text" id="salesOrder" formControlName="salesOrder" placeholder="Enter Product Name / SKU / Scan Barcode" title="Sales Order" 
+             class="form-control" style="border-color: #e1eaea !important;">
+    </div>
+    
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="discountType" class="form-label">Discount Type:*</label>
+        <select id="discountType" formControlName="discountType" class="form-select" title="Select Discount Type" style="border-color: #e1eaea !important;">
+          <option value="percentage">Percentage</option>
+          <option value="fixed">Fixed Amount</option>
+        </select>
+      </div>
+      
+      <div class="col-md-6 mb-3">
+        <label for="discountAmount" class="form-label">Discount Amount:*</label>
+        <input type="number" id="discountAmount" formControlName="discountAmount" placeholder="Enter Discount Amount" title="Discount Amount" 
+               class="form-control" required style="border-color: #e1eaea !important;">
+      </div>
+    </div>
+    
+    <div class="mb-3">
+      <label for="orderTax" class="form-label">Order Tax:*</label>
+      <select id="orderTax" formControlName="orderTax" class="form-select" title="Select Order Tax" style="border-color: #e1eaea !important;">
+        <option value="none">None</option>
+        <option value="5">5%</option>
+        <option value="10">10%</option>
+      </select>
+    </div>
+    
+    <div class="mb-3">
+      <label for="sellNote" class="form-label">Sell Note:</label>
+      <textarea id="sellNote" formControlName="sellNote" placeholder="Enter any notes here" title="Sell Note" 
+                class="form-control" style="border-color: #e1eaea !important;"></textarea>
+    </div>
+  </div>
+
+  <!-- Container 3: Product Information -->
+  <div class="border p-3 mb-4 rounded bg-white" style="border-color: #e1eaea !important;">
+    <h4>Products</h4>
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Subtotal</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody formArrayName="products">
+          <tr *ngFor="let product of products.controls; let i = index" [formGroupName]="i">
+            <td>
+              <input type="text" formControlName="productName" class="form-control" placeholder="Product Name" required>
+            </td>
+            <td>
+              <input type="number" formControlName="quantity" class="form-control" 
+                     (change)="calculateSubtotal(i)" min="0" step="1" required>
+            </td>
+            <td>
+              <input type="number" formControlName="unitPrice" class="form-control" 
+                     (change)="calculateSubtotal(i)" min="0" step="0.01" required>
+            </td>
+            <td>
+              <input type="number" formControlName="subtotal" class="form-control" readonly>
+            </td>
+            <td>
+              <button type="button" class="btn btn-danger btn-sm" (click)="removeProduct(i)" *ngIf="i > 0">
+                Remove
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <button type="button" class="btn btn-primary btn-sm mt-2" (click)="addProduct()">
+      + Add Product
+    </button>
+  </div>
+
+  <!-- Container 4: Shipping Details -->
+  <div class="border p-3 mb-4 rounded bg-white" style="border-color: #e1eaea !important;">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="shippingCharges" class="form-label">Shipping Charges:</label>
+        <input type="number" id="shippingCharges" formControlName="shippingCharges" placeholder="0.00" title="Shipping Charges" 
+               class="form-control" style="border-color: #e1eaea !important;">
+      </div>
+      
+      <div class="col-md-6 mb-3">
+        <label for="shippingStatus" class="form-label">Shipping Status:</label>
+        <select id="shippingStatus" formControlName="shippingStatus" class="form-select" title="Select Shipping Status" style="border-color: #e1eaea !important;">
+          <option value="">Please Select</option>
+          <option value="pending">Pending</option>
+          <option value="shipped">Shipped</option>
+          <option value="delivered">Delivered</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="deliveredTo" class="form-label">Delivered To:</label>
+        <input type="text" id="deliveredTo" formControlName="deliveredTo" placeholder="Enter Recipient Name" title="Delivered To" 
+               class="form-control" style="border-color: #e1eaea !important;">
+      </div>
+      
+      <div class="col-md-6 mb-3">
+        <label for="deliveryPerson" class="form-label">Delivery Person:</label>
+        <input type="text" id="deliveryPerson" formControlName="deliveryPerson" placeholder="Enter Delivery Person Name" title="Delivery Person" 
+               class="form-control" style="border-color: #e1eaea !important;">
+      </div>
+    </div>
+    
+    <div class="mb-3">
+      <label for="shippingDocument" class="form-label">Shipping Document:</label>
+      <input type="file" id="shippingDocument" (change)="onFileSelected($event)" class="form-control" title="Attach a file (Max: 5MB)" style="border-color: #e1eaea !important;">
+      <small class="form-text text-muted">Allowed Files: .pdf, .csv, .zip, .doc, .docx, .jpeg, .jpg, .png</small>
+    </div>
+  </div>
+
+  <!-- Container 5: Attachments -->
+  <div class="border p-3 mb-4 rounded bg-white" style="border-color: #e1eaea !important;">
+    <div class="mb-3">
+      <label for="attachDocument" class="form-label">Attach Document:</label>
+      <input type="file" id="attachDocument" (change)="onFileSelected($event)" class="form-control" title="Attach a file (Max: 5MB)" style="border-color: #e1eaea !important;">
+      <small class="form-text text-muted">Allowed Files: .pdf, .csv, .zip, .doc, .docx, .jpeg, .jpg, .png</small>
+    </div>
+  </div>
+
+  <!-- Total Payable -->
+  <div class="my-4 p-3 border rounded bg-white" style="border-color: #e1eaea !important;">
+    <h3 class="text-center">Total Payable: <span class="text-success">{{ totalPayable | currency }}</span></h3>
+  </div>
+
+  <!-- Submit Button -->
+  <div class="text-center">
+    <button type="submit" [disabled]="draftForm.invalid" class="btn btn-primary">
+      Save Draft
+    </button>
+  </div>
+</form>

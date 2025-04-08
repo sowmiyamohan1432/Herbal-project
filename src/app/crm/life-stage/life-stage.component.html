@@ -1,0 +1,34 @@
+<!-- src/app/components/life-stage/life-stage.component.html -->
+<div class="life-stage-container">
+    <button mat-raised-button color="primary" (click)="toggleForm()">
+      Add +
+    </button>
+  
+    <!-- Show form only when 'showForm' is true -->
+    <div *ngIf="showForm" class="form-container">
+      <h2>Add Life Stage</h2>
+      
+      <mat-form-field appearance="fill">
+        <mat-label>Life Stage*</mat-label>
+        <input matInput [(ngModel)]="lifeStage.name" required />
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Description*</mat-label>
+        <textarea matInput [(ngModel)]="lifeStage.description" required></textarea>
+      </mat-form-field>
+  
+      <div class="form-actions">
+        <button mat-button (click)="toggleForm()">Close</button>
+        <button mat-button (click)="onSave()">Save</button>
+      </div>
+    </div>
+  
+    <!-- You can display added life stages here (optional) -->
+    <div class="life-stage-list">
+      <!-- Display your list of life stages -->
+      <!-- This is just an example; you can customize it -->
+      <p *ngFor="let stage of lifeStages">{{ stage.name }}: {{ stage.description }}</p>
+    </div>
+  </div>
+  

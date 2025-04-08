@@ -1,0 +1,34 @@
+<div class="sources-container">
+    <button class="add-button" (click)="toggleForm()">Add Source +</button>
+  
+    <!-- Show form only when 'showForm' is true -->
+    <div *ngIf="showForm" class="form-container">
+      <h2>Add Source</h2>
+      
+      <div class="form-field">
+        <label for="source-name">Source*</label>
+        <input id="source-name" type="text" [(ngModel)]="source.name" required />
+      </div>
+  
+      <div class="form-field">
+        <label for="source-description">Description*</label>
+        <textarea id="source-description" [(ngModel)]="source.description" required></textarea>
+      </div>
+  
+      <div class="form-actions">
+        <button class="close-btn" (click)="toggleForm()">Close</button>
+        <button class="save-btn" (click)="onSave()">Save</button>
+      </div>
+    </div>
+  
+    <!-- Display added sources -->
+    <div class="sources-list" *ngIf="sources.length > 0">
+      <div *ngFor="let source of sources">
+        <p>{{ source.name }}: {{ source.description }}</p>
+      </div>
+    </div>
+    <div *ngIf="sources.length === 0">
+      <p>No sources added yet.</p>
+    </div>
+  </div>
+  

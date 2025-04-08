@@ -1,0 +1,135 @@
+<div class="container">
+  <h2>Add Purchase Order</h2>
+  <form [formGroup]="purchaseOrderForm" (ngSubmit)="saveOrder()">
+
+    <!-- Container 1: Basic Information -->
+    <div class="container mb-4 p-3 border rounded">
+      <div class="row">
+        <div class="form-group">
+          <label>Supplier *</label>
+          <select formControlName="supplier" class="form-control" required>
+            <option value="">Select Supplier</option>
+            <option *ngFor="let supplier of suppliers" [value]="supplier.id">
+              {{ getSupplierDisplayName(supplier) }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-6 form-group">
+          <label>Reference No:</label>
+          <input formControlName="referenceNo" class="form-control" required />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 form-group">
+          <label>Order Date:</label>
+          <input type="date" formControlName="orderDate" class="form-control" required />
+        </div>
+        <div class="col-md-6 form-group">
+          <label>Delivery Date:</label>
+          <input type="date" formControlName="deliveryDate" class="form-control" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 form-group">
+          <label>Business Location:</label>
+          <input formControlName="businessLocation" class="form-control" required />
+        </div>
+        <div class="col-md-6 form-group">
+          <label>Pay Term:</label>
+          <input formControlName="payTerm" class="form-control" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 form-group">
+          <label>Address:</label>
+          <input formControlName="address" class="form-control" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Container 2: Purchase Requisition -->
+    <div class="container mb-4 p-3 border rounded">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Product Name</th>
+            <th>Order Quantity</th>
+            <th>Unit Cost</th>
+            <th>Discount (%)</th>
+            <th>Line Total</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let requisition of requisitions.controls; let i = index" [formGroupName]="i">
+            <td><input formControlName="productName" class="form-control" required /></td>
+            <td><input type="number" formControlName="orderQuantity" class="form-control" (input)="calculateLineTotal(i)" required /></td>
+            <td><input type="number" formControlName="unitCost" class="form-control" (input)="calculateLineTotal(i)" required /></td>
+            <td><input type="number" formControlName="discountPercent" class="form-control" (input)="calculateLineTotal(i)" /></td>
+            <button type="submit" class="btn btn-success" [disabled]="!purchaseOrderForm.valid">Save</button>
+            <td><button type="button" (click)="requisitions.removeAt(i)" class="btn btn-danger">Remove</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <button type="button" (click)="addRequisition()" class="btn btn-primary">+ Add Product</button>
+    </div>
+
+    <!-- Container 3: Shipping Details -->
+    <div class="container mb-4 p-3 border rounded">
+      <div formGroupName="shippingDetails">
+        <div class="row">
+          <div class="col-md-6 form-group">
+            <label>Shipping Address:</label>
+            <input formControlName="shippingAddress" class="form-control" />
+          </div>
+          <div class="col-md-6 form-group">
+            <label>Shipping Charges:</label>
+            <input type="number" formControlName="shippingCharges" class="form-control" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 form-group">
+            <label>Shipping Status:</label>
+            <select formControlName="shippingStatus" class="form-control">
+              <option value="">Please Select</option>
+              <option>Pending</option>
+              <option>Shipped</option>
+              <option>Delivered</option>
+            </select>
+          </div>
+          <div class="col-md-6 form-group">
+            <label>Delivered To:</label>
+            <input formControlName="deliveredTo" class="form-control" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Container 4: Documents and Notes -->
+    <div class="container mb-4 p-3 border rounded">
+      <div class="row">
+        <div class="col-md-6 form-group">
+          <label>Attach Document:</label>
+          <input type="file" (change)="onFileChange($event, 'attachDocument')" class="form-control" />
+          <small>Max File size: 5MB. Allowed: .pdf, .csv, .zip, .doc, .docx, .jpeg, .jpg, .png</small>
+        </div>
+        <div class="col-md-6 form-group">
+          <label>Shipping Documents:</label>
+          <input type="file" (change)="onFileChange($event, 'shippingDocuments')" class="form-control" />
+          <small>Max File size: 5MB. Allowed: .pdf, .csv, .zip, .doc, .docx, .jpeg, .jpg, .png</small>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 form-group">
+          <label>Additional Notes:</label>
+          <textarea formControlName="additionalNotes" class="form-control" rows="3"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Save Button -->
+    <div class="text-center">
+      <button type="submit" class="btn btn-success" [disabled]="!purchaseOrderForm.valid">Save Purchase Order</button>
+    </div>
+  </form>
+</div>

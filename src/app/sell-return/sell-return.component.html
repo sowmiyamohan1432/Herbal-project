@@ -1,0 +1,206 @@
+<!-- sell-return.component.html -->
+<div class="sell-return-container">
+    <h1>Sell Return</h1>
+  
+    <div class="filters-section">
+      <button class="btn btn-primary" (click)="toggleFilters()">
+        <i class="fa fa-filter" aria-hidden="true"></i> Filters
+      </button>
+    </div>
+  
+    <!-- Filter panel that toggles visibility -->
+    <div class="filter-panel" *ngIf="showFilters">
+      <div class="filter-row">
+        <div class="filter-column">
+          <label for="locationFilter">Business Location:</label>
+          <select 
+            id="locationFilter" 
+            class="form-control" 
+            [(ngModel)]="selectedLocation"
+            (change)="applyFilters()"
+          >
+            <option *ngFor="let location of locations" [value]="location">{{ location }}</option>
+          </select>
+        </div>
+        
+        <div class="filter-column">
+          <label for="customerFilter">Customer:</label>
+          <select 
+            id="customerFilter" 
+            class="form-control" 
+            [(ngModel)]="selectedCustomer"
+            (change)="applyFilters()"
+          >
+            <option *ngFor="let customer of customers" [value]="customer">{{ customer }}</option>
+          </select>
+        </div>
+        
+        <div class="filter-column">
+          <label for="dateRangeFilter">Date Range:</label>
+          <div class="date-range-inputs">
+            <input 
+              type="date" 
+              id="startDateFilter" 
+              class="form-control" 
+              [(ngModel)]="dateRange.startDate"
+              (change)="applyFilters()"
+              aria-label="Start date"
+              title="Start date"
+            >
+            <span>-</span>
+            <input 
+              type="date" 
+              id="endDateFilter" 
+              class="form-control" 
+              [(ngModel)]="dateRange.endDate"
+              (change)="applyFilters()"
+              aria-label="End date"
+              title="End date"
+            >
+          </div>
+        </div>
+        
+        <div class="filter-column">
+          <label for="userFilter">User:</label>
+          <select 
+            id="userFilter" 
+            class="form-control" 
+            [(ngModel)]="selectedUser"
+            (change)="applyFilters()"
+          >
+            <option *ngFor="let user of users" [value]="user">{{ user }}</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="filter-actions">
+        <button class="btn btn-secondary" (click)="resetFilters()">
+          Reset
+        </button>
+      </div>
+    </div>
+  
+    <div class="sell-return-content">
+      <div class="table-controls">
+        <div class="entries-control">
+          <label for="entriesSelect">Show</label> 
+          <select 
+            id="entriesSelect"
+            (change)="onEntriesChange($event)"
+            aria-label="Number of entries to display"
+            title="Number of entries to display"
+          >
+            <option value="10">10</option>
+            <option value="25" selected>25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+          entries
+        </div>
+        
+        <div class="export-controls">
+          <button class="btn btn-secondary" (click)="exportCSV()" aria-label="Export as CSV" title="Export as CSV">
+            <i class="fa fa-file-csv" aria-hidden="true"></i> Export CSV
+          </button>
+          <button class="btn btn-secondary" (click)="exportExcel()" aria-label="Export as Excel" title="Export as Excel">
+            <i class="fa fa-file-excel" aria-hidden="true"></i> Export Excel
+          </button>
+          <button class="btn btn-secondary" (click)="print()" aria-label="Print table" title="Print table">
+            <i class="fa fa-print" aria-hidden="true"></i> Print
+          </button>
+          <button class="btn btn-secondary" (click)="toggleColumnVisibility()" aria-label="Toggle column visibility" title="Toggle column visibility">
+            <i class="fa fa-columns" aria-hidden="true"></i> Column visibility
+          </button>
+          <button class="btn btn-secondary" (click)="exportPDF()" aria-label="Export as PDF" title="Export as PDF">
+            <i class="fa fa-file-pdf" aria-hidden="true"></i> Export PDF
+          </button>
+        </div>
+        
+        <div class="search-control">
+          <label for="searchInput">Search:</label>
+          <input 
+            id="searchInput"
+            type="text" 
+            placeholder="Search in table..." 
+            (input)="onSearch($event)"
+            [value]="searchQuery"
+            aria-label="Search in table"
+            title="Search in table"
+          >
+        </div>
+      </div>
+  
+      <div class="table-responsive">
+        <table class="table table-bordered" aria-label="Sell Return Records">
+          <thead>
+            <tr>
+              <th scope="col">Date <i class="fa fa-sort" aria-hidden="true"></i></th>
+              <th scope="col">Invoice No. <i class="fa fa-sort" aria-hidden="true"></i></th>
+              <th scope="col">Parent Sale <i class="fa fa-sort" aria-hidden="true"></i></th>
+              <th scope="col">Customer name <i class="fa fa-sort" aria-hidden="true"></i></th>
+              <th scope="col">Location <i class="fa fa-sort" aria-hidden="true"></i></th>
+              <th scope="col">Payment Status <i class="fa fa-sort" aria-hidden="true"></i></th>
+              <th scope="col">Total amount <i class="fa fa-sort" aria-hidden="true"></i></th>
+              <th scope="col">Payment due</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="filteredEntries.length > 0; else noData">
+              <tr *ngFor="let entry of filteredEntries.slice(startIndex, endIndex)">
+                <td>{{ entry.date }}</td>
+                <td>{{ entry.invoiceNo }}</td>
+                <td>{{ entry.parentSale }}</td>
+                <td>{{ entry.customerName }}</td>
+                <td>{{ entry.location }}</td>
+                <td>{{ entry.paymentStatus }}</td>
+                <td>₹ {{ entry.totalAmount.toFixed(2) }}</td>
+                <td>₹ {{ entry.paymentDue.toFixed(2) }}</td>
+                <td>
+                  
+                </td>
+              </tr>
+            </ng-container>
+            <ng-template #noData>
+              <tr>
+                <td colspan="9" class="text-center">No data available in table</td>
+              </tr>
+            </ng-template>
+          </tbody>
+          <tfoot>
+            <tr class="total-row">
+              <td colspan="6" class="text-right">Total:</td>
+              <td>₹ {{ getTotalAmount().toFixed(2) }}</td>
+              <td>₹ {{ getTotalPaymentDue().toFixed(2) }}</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+  
+      <div class="pagination-info">
+        Showing {{ totalEntries > 0 ? startIndex + 1 : 0 }} to {{ endIndex }} of {{ totalEntries }} entries
+      </div>
+  
+      <div class="pagination-controls">
+        <button 
+          class="btn btn-outline-secondary" 
+          [disabled]="currentPage === 1"
+          (click)="previousPage()"
+          aria-label="Go to previous page"
+          title="Go to previous page"
+        >
+          Previous
+        </button>
+        <button 
+          class="btn btn-outline-secondary" 
+          [disabled]="currentPage === totalPages || totalPages === 0"
+          (click)="nextPage()"
+          aria-label="Go to next page"
+          title="Go to next page"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,105 @@
+<!-- list-quotations.component.html -->
+<div class="quotation-container">
+  <div class="header-section">
+    <h1>List of quotations</h1>
+    <button class="add-btn" (click)="navigateToQuotation()">
+      <i class="fas fa-plus"></i> Add New Quotation
+    </button>
+  </div>
+
+  <div class="action-bar">
+    <div class="left-actions">
+      <div class="show-entries">
+        <span>Show</span>
+        <select [(ngModel)]="itemsPerPage" (change)="applyFilter()">
+          <option value="10">10</option>
+          <option value="25" selected>25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+        <span>entries</span>
+      </div>
+    </div>
+
+    <div class="right-actions">
+      <button class="action-btn" (click)="exportCSV()">
+        <i class="fas fa-file-csv"></i> Export CSV
+      </button>
+      <button class="action-btn" (click)="exportExcel()">
+        <i class="fas fa-file-excel"></i> Export Excel
+      </button>
+      <button class="action-btn" (click)="printTable()">
+        <i class="fas fa-print"></i> Print
+      </button>
+      <button class="action-btn" (click)="toggleColumnVisibility()">
+        <i class="fas fa-columns"></i> Column visibility
+      </button>
+      <button class="action-btn" (click)="exportPDF()">
+        <i class="fas fa-file-pdf"></i> Export PDF
+      </button>
+      
+      <div class="search-box">
+        <input type="text" placeholder="Search..." [(ngModel)]="searchText" (input)="applyFilter()">
+        <i class="fas fa-search"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Column Visibility Card -->
+  <div class="column-visibility-card" *ngIf="showColumnVisibilityCard">
+    <div class="card-header">
+    
+    </div>
+    <div class="card-body">
+      <div class="visibility-option" *ngFor="let column of columnDefinitions">
+        <label>
+          <input type="checkbox" [(ngModel)]="columnsVisibility[column.key]" (change)="applyColumnVisibility()">
+          {{ column.label }}
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-container">
+    <table class="quotation-table">
+      <thead>
+        <tr>
+          <th *ngIf="columnsVisibility['customer']">Customer</th>
+          <th *ngIf="columnsVisibility['saleDate']">Date</th>
+          <th *ngIf="columnsVisibility['totalPayable']">Amount</th>
+          <th *ngIf="columnsVisibility['status']">Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let quotation of filteredQuotations">
+          <td *ngIf="columnsVisibility['customer']">{{ quotation.customer }}</td>
+          <td *ngIf="columnsVisibility['saleDate']">{{ quotation.saleDate | date:'MMM d, y' }}</td>
+          <td *ngIf="columnsVisibility['totalPayable']">{{ quotation.totalPayable | currency }}</td>
+          <td *ngIf="columnsVisibility['status']">
+            <span class="status-badge" 
+                  [class.shipped]="quotation.shippingStatus === 'shipped'"
+                  [class.pending]="quotation.shippingStatus === 'pending'"
+                  [class.delivered]="quotation.shippingStatus === 'delivered'">
+              {{ quotation.shippingStatus }}
+            </span>
+          </td>
+          <td class="action-cell">
+            <button class="delete-btn" (click)="onDelete(quotation.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination">
+    <button class="page-btn" (click)="previousPage()" [disabled]="currentPage === 1">
+      Previous
+    </button>
+    <span class="page-number">Page {{ currentPage }}</span>
+    <button class="page-btn" (click)="nextPage()" 
+            [disabled]="currentPage * itemsPerPage >= filteredQuotations.length">
+      Next
+    </button>
+  </div>
+</div>

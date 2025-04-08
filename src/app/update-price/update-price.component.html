@@ -1,0 +1,30 @@
+<div class="update-price-container">
+  <h1 class="page-title">Update Price</h1>
+
+  <div class="price-card">
+    <h5 class="card-title">Import Export Product Price</h5>
+    
+    <div class="content-container">
+      <div class="export-section">
+        <button (click)="exportToExcel()" class="export-btn">Export product prices</button>
+      </div>
+      
+      <div class="import-section">
+        <div class="file-input-container">
+          <span class="file-label">File To Import:</span>
+          <input type="file" (change)="onFileSelected($event)" class="file-input">
+        </div>
+        
+        <button (click)="importUpdatedPrices()" class="submit-btn">Submit</button>
+      </div>
+    </div>
+    
+    <div class="instructions">
+      <h5>Instructions:</h5>
+      <p>Export product prices by clicking on above button</p>
+      <p>Make changes in product price including tax & selling price groups.</p>
+      <p>Do not change any product name, sku & headers</p>
+      <p>After making changes import the file</p>
+    </div>
+  </div>
+</div>

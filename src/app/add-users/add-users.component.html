@@ -1,0 +1,219 @@
+<div class="user-form-container">
+  <h2>Add User</h2>
+
+  <form [formGroup]="addUserForm" (ngSubmit)="onSubmit()">
+    <!-- BASIC INFO -->
+    <div class="user-basic-container">
+      <h3>Basic Info</h3>
+      <label>Prefix:</label>
+      <select formControlName="prefix">
+        <option value="Mr">Mr</option>
+        <option value="Mrs">Mrs</option>
+        <option value="Miss">Miss</option>
+      </select>
+
+      <label>First Name:*</label>
+      <input type="text" formControlName="firstName" required />
+
+      <label>Last Name:</label>
+      <input type="text" formControlName="lastName" />
+
+      <label>Email:*</label>
+      <input type="email" formControlName="email" required />
+
+      <div class="checkbox-group">
+        <label><input type="checkbox" formControlName="isActive" /> Is Active?</label>
+        <label><input type="checkbox" formControlName="enableServicePin" /> Enable Service Staff Pin</label>
+      </div>
+    </div>
+
+    <!-- ROLES AND PERMISSIONS SECTION -->
+    <div class="roles-permissions-section">
+      <h3>Roles & Permissions</h3>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="allowLogin">
+            <input type="checkbox" id="allowLogin" formControlName="allowLogin">
+            Allow Login
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label for="role">Role:</label>
+          <select id="role" formControlName="role" class="form-control">
+            <option value="" disabled>Select Role</option>
+            <!-- Dynamic roles from the roles service -->
+            <option *ngFor="let role of roles" [value]="role.roleName">{{ role.roleName }}</option>
+            <!-- Include default roles as fallback if roles array is empty -->
+            <option *ngIf="!roles || roles.length === 0" value="Admin">Admin</option>
+            <option *ngIf="!roles || roles.length === 0" value="Cashier">Cashier</option>
+            <option *ngIf="!roles || roles.length === 0" value="Staff">Staff</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="allLocations">
+            <input type="checkbox" id="allLocations" formControlName="allLocations" (change)="onAllLocationsChange()">
+            All Locations
+          </label>
+        </div>
+
+        <div class="form-group" *ngIf="!addUserForm.get('allLocations')?.value">
+          <label>Select Location:</label>
+          <div *ngFor="let location of businessLocations">
+            <label>
+              <input type="checkbox" 
+                     [checked]="isLocationSelected(location.id)" 
+                     (change)="onLocationSelect(location.id, $event)">
+              {{ location.name }}
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- LOGIN INFO -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="username">Username:</label>
+          <input type="text" id="username" formControlName="username" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input type="password" id="password" formControlName="password" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password:</label>
+          <input type="password" id="confirmPassword" formControlName="confirmPassword" class="form-control">
+        </div>
+      </div>
+    </div>
+
+    <!-- SALES INFO -->
+    <div class="sales-info-container">
+      <h3>Sales</h3>
+
+      <label>Sales Commission Percentage (%):</label>
+      <input type="number" formControlName="salesCommission" />
+
+      <label>Max Sales Discount Percent:</label>
+      <input type="number" formControlName="maxDiscount" />
+
+      <label><input type="checkbox" formControlName="allowSelectedContacts" /> Allow Selected Contacts</label>
+
+      <div *ngIf="addUserForm.get('allowSelectedContacts')?.value">
+        <label>Select Contacts:</label>
+        <select formControlName="selectedContact">
+          <option value="contact1">Contact 1</option>
+          <option value="contact2">Contact 2</option>
+          <option value="contact3">Contact 3</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- MORE INFO -->
+    <div class="more-info-container">
+      <h3>More Information</h3>
+
+      <label>Date of Birth:</label>
+      <input type="date" formControlName="dob" />
+
+      <label>Gender:</label>
+      <select formControlName="gender">
+        <option value="">Please Select</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <label>Marital Status:</label>
+      <input type="text" formControlName="maritalStatus" />
+
+      <label>Blood Group:</label>
+      <input type="text" formControlName="bloodGroup" />
+
+      <label>Mobile Number:</label>
+      <input type="tel" formControlName="mobileNumber" />
+
+      <label>Alternate Contact Number:</label>
+      <input type="tel" formControlName="alternateContactNumber" />
+
+      <label>Family Contact Number:</label>
+      <input type="tel" formControlName="familyContactNumber" />
+
+      <label>Facebook Link:</label>
+      <input type="url" formControlName="facebookLink" />
+
+      <label>Twitter Link:</label>
+      <input type="url" formControlName="twitterLink" />
+
+      <label>Social Media 1:</label>
+      <input type="url" formControlName="socialMedia1" />
+
+      <label>Social Media 2:</label>
+      <input type="url" formControlName="socialMedia2" />
+
+      <label>Custom Field 1:</label>
+      <input type="text" formControlName="customField1" />
+
+      <label>Custom Field 2:</label>
+      <input type="text" formControlName="customField2" />
+
+      <label>Custom Field 3:</label>
+      <input type="text" formControlName="customField3" />
+
+      <label>Custom Field 4:</label>
+      <input type="text" formControlName="customField4" />
+
+      <label>Guardian Name:</label>
+      <input type="text" formControlName="guardianName" />
+
+      <label>ID Proof Name:</label>
+      <input type="text" formControlName="idProofName" />
+
+      <label>ID Proof Number:</label>
+      <input type="text" formControlName="idProofNumber" />
+
+      <label>Permanent Address:</label>
+      <input type="text" formControlName="permanentAddress" />
+
+      <label>Current Address:</label>
+      <input type="text" formControlName="currentAddress" />
+    </div>
+
+    <!-- HORIZONTAL LINE -->
+    <hr />
+
+    <!-- BANK DETAILS -->
+    <div class="bank-details-container">
+      <h3>Bank Details</h3>
+
+      <label>Account Holder's Name:</label>
+      <input type="text" formControlName="accountHolderName" />
+
+      <label>Account Number:</label>
+      <input type="text" formControlName="accountNumber" />
+
+      <label>Bank Name:</label>
+      <input type="text" formControlName="bankName" />
+
+      <label>Bank Identifier Code:</label>
+      <input type="text" formControlName="bankIdentifierCode" />
+
+      <label>Branch:</label>
+      <input type="text" formControlName="branch" />
+
+      <label>Tax Payer ID:</label>
+      <input type="text" formControlName="taxPayerId" />
+    </div>
+
+    <!-- SUBMIT -->
+    <div class="submit-button">
+      <button type="submit" [disabled]="!addUserForm.valid">Submit</button>
+    </div>
+  </form>
+</div>

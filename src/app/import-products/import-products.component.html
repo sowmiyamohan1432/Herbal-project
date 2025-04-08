@@ -1,0 +1,238 @@
+<!-- import-products.component.html -->
+<div class="import-container">
+    <h4>Import Products</h4>
+    <div class="import-card">
+     
+      
+      <div class="import-section">
+        <h6>File To Import:</h6>
+        <div class="file-input-container">
+          <input type="file" id="fileInput" (change)="onFileSelected($event)" class="file-input" accept=".xlsx, .xls">
+          <label for="fileInput" class="file-label">
+            <span class="file-button">Choose File</span>
+            <span class="file-name">{{ selectedFile ? selectedFile.name : 'No file chosen' }}</span>
+          </label>
+        </div>
+        <button class="submit-btn" (click)="importProducts()">Submit</button>
+        
+       <!-- Change this: -->
+  <div class="download-template">
+    <a (click)="downloadTemplate()"></a>
+  </div>
+  
+  <!-- To this: -->
+  <div class="download-template">
+    <button class="download-btn" (click)="downloadTemplate()">
+      <span class="material-icons">download</span>
+      Download template file
+    </button>
+  </div>
+      </div>
+    </div>
+    
+    <div class="instructions-card">
+      <h5>Instructions</h5>
+      <div class="instructions-section">
+        <h6>Follow the instructions carefully before importing the file.</h6>
+        <p>The columns of the file should be in the following order.</p>
+        <div class="table-container">
+          <table class="instructions-table">
+            <thead>
+              <tr>
+                <th>Column Number</th>
+                <th>Column Name</th>
+                <th>Instruction</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Product Name (Required)</td>
+                <td>Name of the product</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Brand (Optional)</td>
+                <td>Name of the brand<br><span class="instruction-detail">(If not found new brand with the given name will be created)</span></td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>Unit (Required)</td>
+                <td>Name of the unit</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>Category (Optional)</td>
+                <td>Name of the Category<br><span class="instruction-detail">(If not found new category with the given name will be created)</span></td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>Sub category (Optional)</td>
+                <td>Name of the Sub-Category<br><span class="instruction-detail">(If not found new sub-category with the given name under the parent Category will be created)</span></td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>SKU (Optional)</td>
+                <td>Product SKU. If blank an SKU will be automatically generated</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td>Barcode Type (Optional, Default: C128)</td>
+                <td>Barcode Type for the product.<br><span class="instruction-detail">Currently supported: C128, C39, EAN-13, EAN-8, UPC-A, UPC-E, ITF-14</span></td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td>Manage Stock? (Required)</td>
+                <td>Enable or disable stock management<br><span class="instruction-detail">1 = Yes</span><br><span class="instruction-detail">0 = No</span></td>
+              </tr>
+              <tr>
+                <td>9</td>
+                <td>Alert quantity (Optional)</td>
+                <td>Alert quantity</td>
+              </tr>
+              <tr>
+                <td>10</td>
+                <td>Expires in (Optional)</td>
+                <td>Product expiry period (Only in numbers)</td>
+              </tr>
+              <tr>
+                <td>11</td>
+                <td>Expiry Period Unit (Optional)</td>
+                <td>Unit for the expiry period<br><span class="instruction-detail">Available Options: days, months</span></td>
+              </tr>
+              <tr>
+                <td>12</td>
+                <td>Applicable Tax (Optional)</td>
+                <td>Name of the Tax Rate<br><span class="instruction-detail">If purchase Price (Excluding Tax) is not same as Purchase Price (Including Tax) then you must supply the tax rate name.</span></td>
+              </tr>
+              <tr>
+                <td>13</td>
+                <td>Selling Price Tax Type (Required)</td>
+                <td>Selling Price Tax Type<br><span class="instruction-detail">Available Options: inclusive, exclusive</span></td>
+              </tr>
+              <tr>
+                <td>14</td>
+                <td>Product Type (Required)</td>
+                <td>Product Type<br><span class="instruction-detail">Available Options: single, variable</span></td>
+              </tr>
+              <tr>
+                <td>15</td>
+                <td>Variation Name (Required if product type is variable)</td>
+                <td>Name of the variation (Ex: Size, Color etc)</td>
+              </tr>
+              <tr>
+                <td>16</td>
+                <td>Variation Values (Required if product type is variable)</td>
+                <td>Values for the variation separated with '|'<br><span class="instruction-detail">(Ex: Red|Blue|Green)</span></td>
+              </tr>
+              <tr>
+                <td>17</td>
+                <td>Variation SKUs (Optional)</td>
+                <td>SKUs of each variations separated by "|" if product type is variable</td>
+              </tr>
+              <tr>
+                <td>18</td>
+                <td>Purchase Price (Including Tax)<br>(Required if Purchase Price Excluding Tax is not given)</td>
+                <td>Purchase Price (Including Tax) (Only in numbers)<br><span class="instruction-detail">For variable products '|' separated values with the same order as Variation Values</span><br><span class="instruction-detail">(Ex: 84|85|88)</span></td>
+              </tr>
+              <tr>
+                <td>19</td>
+                <td>Purchase Price (Excluding Tax)<br>(Required if Purchase Price Including Tax is not given)</td>
+                <td>Purchase Price (Excluding Tax) (Only in numbers)<br><span class="instruction-detail">For variable products '|' separated values with the same order as Variation Values</span><br><span class="instruction-detail">(Ex: 84|85|88)</span></td>
+              </tr>
+              <tr>
+                <td>20</td>
+                <td>Profit Margin % (Optional)</td>
+                <td>Profit Margin (Only in numbers)<br><span class="instruction-detail">If blank default profit margin for the business will be used</span></td>
+              </tr>
+              <tr>
+                <td>21</td>
+                <td>Selling Price (Optional)</td>
+                <td>Selling Price (Only in numbers)<br><span class="instruction-detail">If blank selling price will be calculated with the given Purchase Price and Applicable Tax</span></td>
+              </tr>
+              <tr>
+                <td>22</td>
+                <td>Opening Stock (Optional)</td>
+                <td>Opening Stock (Only in numbers)<br><span class="instruction-detail">For variable products separate stock quantities with '|'</span><br><span class="instruction-detail">(Ex: 100|150|200)</span></td>
+              </tr>
+              <tr>
+                <td>23</td>
+                <td>Opening stock location (Optional)<br>If blank first business location will be used</td>
+                <td>Name of the business location</td>
+              </tr>
+              <tr>
+                <td>24</td>
+                <td>Expiry Date (Optional)</td>
+                <td>Stock Expiry Date<br><span class="instruction-detail">Format: mm-dd-yyyy; Ex: 11-25-2018</span></td>
+              </tr>
+              <tr>
+                <td>25</td>
+                <td>Enable Product description, IMEI or Serial Number (Optional, Default: 0)</td>
+                <td><span class="instruction-detail">1 = Yes</span><br><span class="instruction-detail">0 = No</span></td>
+              </tr>
+              <tr>
+                <td>26</td>
+                <td>Weight (Optional)</td>
+                <td>Optional</td>
+              </tr>
+              <tr>
+                <td>27</td>
+                <td>Rack (Optional)</td>
+                <td>Rack details separated by '|' for different business locations serially.<br><span class="instruction-detail">(Ex: R1|R5|R12)</span></td>
+              </tr>
+              <tr>
+                <td>28</td>
+                <td>Row (Optional)</td>
+                <td>Row details separated by '|' for different business locations serially.<br><span class="instruction-detail">(Ex: ROW1|ROW2|ROW3)</span></td>
+              </tr>
+              <tr>
+                <td>29</td>
+                <td>Position (Optional)</td>
+                <td>Position details separated by '|' for different business locations serially.<br><span class="instruction-detail">(Ex: POS1|POS2|POS3)</span></td>
+              </tr>
+              <tr>
+                <td>30</td>
+                <td>Image (Optional)</td>
+                <td>Image name with extension.<br><span class="instruction-detail">(Image must be uploaded to the server public/uploads/img)</span><br><span class="instruction-detail">Or URL of the image</span></td>
+              </tr>
+              <tr>
+                <td>31</td>
+                <td>Product Description (Optional)</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>32</td>
+                <td>Custom Field1 (Optional)</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>33</td>
+                <td>Custom Field2 (Optional)</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>34</td>
+                <td>Custom Field3 (Optional)</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>35</td>
+                <td>Custom Field4 (Optional)</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>36</td>
+                <td>Not for selling (Optional)</td>
+                <td><span class="instruction-detail">1 = Yes</span><br><span class="instruction-detail">0 = No</span></td>
+              </tr>
+              <tr>
+                <td>37</td>
+                <td>Product locations (Optional)</td>
+                <td>Comma separated string of business location names where product will be available</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>

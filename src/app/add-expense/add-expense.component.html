@@ -1,0 +1,128 @@
+<div class="form-container">
+  <h2>Add Expense</h2>
+  <form [formGroup]="expenseForm" (ngSubmit)="saveExpense()">
+    
+    <!-- First Container - Basic Information -->
+    <div class="form-section">
+      <div class="three-column-grid">
+        <div class="form-group">
+          <label for="businessLocation">Business Location:*</label>
+          <input id="businessLocation" formControlName="businessLocation" type="text" required placeholder="Enter Business Location">
+        </div>
+
+        <div class="form-group">
+          <label for="expenseCategory">Expense Category:</label>
+          <input id="expenseCategory" formControlName="expenseCategory" type="text" placeholder="Enter Expense Category">
+        </div>
+
+        <div class="form-group">
+          <label for="subCategory">Sub Category:</label>
+          <input id="subCategory" formControlName="subCategory" type="text" placeholder="Enter Sub Category">
+        </div>
+
+        <div class="form-group">
+          <label for="referenceNo">Reference No:</label>
+          <input id="referenceNo" formControlName="referenceNo" type="text" placeholder="Leave empty to autogenerate">
+        </div>
+
+        <div class="form-group">
+          <label for="date">Date:*</label>
+          <input id="date" formControlName="date" type="datetime-local" required title="Select date">
+        </div>
+
+        <div class="form-group">
+          <label for="expenseFor">Expense for:</label>
+          <input id="expenseFor" formControlName="expenseFor" type="text" placeholder="Enter Expense For">
+        </div>
+
+        <div class="form-group">
+          <label for="expenseForContact">Expense for Contact:</label>
+          <input id="expenseForContact" formControlName="expenseForContact" type="text" placeholder="Enter Contact">
+        </div>
+
+        <div class="form-group">
+          <label for="applicableTax">Applicable Tax:</label>
+          <select id="applicableTax" formControlName="applicableTax" title="Select Applicable Tax">
+            <option value="None">None</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="totalAmount">Total Amount:*</label>
+          <input id="totalAmount" formControlName="totalAmount" type="number" required placeholder="Enter Total Amount">
+        </div>
+      </div>
+
+      <div class="form-group full-width">
+        <label for="expenseNote">Expense Note:</label>
+        <textarea id="expenseNote" formControlName="expenseNote" placeholder="Enter any notes"></textarea>
+      </div>
+    </div>
+
+    <!-- Second Container - Document and Recurring Options -->
+    <div class="form-section">
+      <div class="form-group">
+        <label for="document">Attach Document:</label>
+        <input id="document" type="file" (change)="onFileSelected($event)" title="Upload a document">
+        <small>Max File size: 5MB. Allowed Files: .pdf, .csv, .zip, .doc, .docx, .jpeg, .jpg, .png</small>
+      </div>
+
+      <div class="checkbox-group">
+        <label>
+          <input type="checkbox" formControlName="isRefund"> Is Refund?
+        </label>
+        <label>
+          <input type="checkbox" formControlName="isRecurring"> Is Recurring?
+        </label>
+      </div>
+
+      <div class="two-column-grid" *ngIf="expenseForm.get('isRecurring')?.value">
+        <div class="form-group">
+          <label for="recurringInterval">Recurring Interval:*</label>
+          <input id="recurringInterval" formControlName="recurringInterval" type="text" placeholder="Enter Interval">
+        </div>
+
+        <div class="form-group">
+          <label for="repetitions">No. of Repetitions:</label>
+          <input id="repetitions" formControlName="repetitions" type="number" placeholder="If blank, expense will be generated infinite times">
+        </div>
+      </div>
+    </div>
+
+    <!-- Third Container - Payment Information -->
+    <div class="form-section">
+      <div class="two-column-grid">
+        <div class="form-group">
+          <label for="paymentAmount">Amount:*</label>
+          <input id="paymentAmount" formControlName="paymentAmount" type="number" required placeholder="Enter Payment Amount">
+        </div>
+
+        <div class="form-group">
+          <label for="paidOn">Paid On:*</label>
+          <input id="paidOn" formControlName="paidOn" type="datetime-local" required title="Select Payment Date">
+        </div>
+
+        <div class="form-group">
+          <label for="paymentMethod">Payment Method:*</label>
+          <select id="paymentMethod" formControlName="paymentMethod" title="Select Payment Method">
+            <option value="Cash">Cash</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="paymentAccount">Payment Account:</label>
+          <input id="paymentAccount" formControlName="paymentAccount" type="text" placeholder="Enter Payment Account">
+        </div>
+      </div>
+
+      <div class="form-group full-width">
+        <label for="paymentNote">Payment Note:</label>
+        <textarea id="paymentNote" formControlName="paymentNote" placeholder="Enter Payment Note"></textarea>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit">Save</button>
+    </div>
+  </form>
+</div>

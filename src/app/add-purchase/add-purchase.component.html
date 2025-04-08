@@ -1,0 +1,157 @@
+<div class="container">
+  <h2>Add Purchase</h2>
+
+  <form [formGroup]="purchaseForm" (ngSubmit)="savePurchase()">
+      <!-- Card 1: Purchase Order -->
+      <div class="card mb-3">
+          <div class="card-header">Purchase Order</div>
+          <div class="card-body">
+              <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Supplier *</label>
+                        <select formControlName="supplierId" class="form-control" required
+        (change)="onSupplierChange($any($event.target).value)">
+                          <option value="" disabled selected>Select Supplier</option>
+                          <option *ngFor="let supplier of suppliers" [value]="supplier.id">
+                            {{ getSupplierDisplayName(supplier) }}
+                          </option>
+                        </select>
+                        <input type="hidden" formControlName="supplierName">
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form-group">
+                          <label>Address:</label>
+                          <input type="text" formControlName="address" class="form-control" />
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form-group">
+                          <label>Reference No:</label>
+                          <input type="text" formControlName="referenceNo" class="form-control" required />
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form-group">
+                          <label>Purchase Date:</label>
+                          <input type="date" formControlName="purchaseDate" class="form-control" required />
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form-group">
+                          <label>Purchase Status:</label>
+                          <input type="text" formControlName="purchaseStatus" class="form-control" required />
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form-group">
+                          <label>Business Location:</label>
+                          <input type="text" formControlName="businessLocation" class="form-control" required />
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form-group">
+                          <label>Pay Term:</label>
+                          <input type="text" formControlName="payTerm" class="form-control" />
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form-group">
+                          <label>Attach Document:</label>
+                          <input type="file" (change)="onFileSelected($event)" class="form-control" />
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- Card 2: Product Table -->
+      <div class="card mb-3">
+          <div class="card-header">Product Details</div>
+          <div class="card-body">
+              <!-- Add the table structure here -->
+          </div>
+      </div>
+
+      <!-- Card 3: Discount & Tax -->
+      <div class="card mb-3">
+          <div class="card-header">Discount & Tax</div>
+          <div class="card-body">
+              <div class="row">
+                  <div class="col-md-6">
+                      <div class="form-group">
+                          <label>Discount Type:</label>
+                          <input type="text" formControlName="discountType" class="form-control" />
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form-group">
+                          <label>Discount Amount:</label>
+                          <input type="number" formControlName="discountAmount" class="form-control" />
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form-group">
+                          <label>Purchase Tax:</label>
+                          <input type="number" formControlName="purchaseTax" class="form-control" />
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form-group">
+                          <label>Additional Notes:</label>
+                          <textarea formControlName="additionalNotes" class="form-control"></textarea>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- Card 4: Shipping Details -->
+      <div class="card mb-3">
+          <div class="card-header">Shipping Details</div>
+          <div class="card-body">
+              <div class="form-group">
+                  <label>Additional Shipping Charges:</label>
+                  <input type="number" formControlName="shippingCharges" class="form-control" />
+              </div>
+          </div>
+      </div>
+
+      <!-- Card 5: Payment Details -->
+      <div class="card mb-3">
+          <div class="card-header">Add Payment</div>
+          <div class="card-body">
+              <div class="row">
+                  <div class="col-md-6">
+                      <div class="form-group">
+                          <label>Amount:</label>
+                          <input type="number" formControlName="paymentAmount" class="form-control" required />
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form-group">
+                          <label>Paid On:</label>
+                          <input type="date" formControlName="paidOn" class="form-control" required />
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form-group">
+                          <label>Payment Method:</label>
+                          <input type="text" formControlName="paymentMethod" class="form-control" required />
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form-group">
+                          <label>Payment Note:</label>
+                          <textarea formControlName="paymentNote" class="form-control"></textarea>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- Save Button -->
+      <button type="submit" class="btn btn-success mt-3">Save</button>
+  </form>
+</div>

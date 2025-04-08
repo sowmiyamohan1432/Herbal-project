@@ -1,0 +1,322 @@
+/* import-products.component.scss */
+.import-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    
+  }
+  
+  .import-card, .instructions-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e0e0e0;
+    padding: 1.5rem;
+    
+    h1, h2 {
+      color: #333;
+      margin-top: 0;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #eee;
+    }
+  }
+  h4{ 
+    margin-top: 5%;
+  }
+  .import-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    height: 30vh;
+  }
+  
+  .file-input-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .file-input {
+    display: none;
+  }
+  
+  .file-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+  }
+  
+  .file-button {
+    padding: 0.5rem 1rem;
+    background-color: #f0f0f0;
+    border: 1px solid #d0d0d0;
+    border-radius: 4px;
+    transition: all 0.2s;
+    margin-top: -5%;
+    
+    
+    &:hover {
+      background-color: #e0e0e0;
+    }
+  }
+  
+  .file-name {
+    color: #202020;
+    font-size: 0.9rem;
+    margin-top: -2%;
+  }
+  
+  .submit-btn {
+    padding: 0.5rem 1.5rem;
+    background-color: #494cf5;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    align-self: flex-start;
+    transition: background-color 0.2s;
+    margin-left: 30%;
+    margin-top: -9%;
+    height: 7vh;
+    
+  
+  }
+  .download-btn {
+    padding: 0.5rem 1rem;
+    background-color: #11a781; /* Blue color matching the link */
+    color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
+    margin-top: 2%;
+    height: 8vh;
+    font-weight: bold;
+    
+    width: 20%;
+    
+  
+    &:active {
+      transform: translateY(1px); /* Subtle click effect */
+    }
+  }
+  
+  
+  .material-icons {
+    font-size: 20px;
+    margin-top: 2%;
+  }
+  .instructions-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    
+    p {
+      margin: 0;
+      color: #555;
+      line-height: 1.5;
+    }
+  }
+  
+  .table-container {
+    overflow-x: auto;
+    margin-top: 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+  }
+  
+  .instructions-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    
+    th, td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border: 1px solid #e0e0e0;
+      line-height: 1.4;
+      text-align: center;
+    }
+    
+    th {
+      background-color: #f5f5f5;
+      font-weight: 600;
+      position: sticky;
+      top: 0;
+      color: #202020;
+      font-weight: bold;
+      text-align: center;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #fafafa;
+    }
+    
+    tr:hover {
+      background-color: #f0f0f0;
+    }
+    
+    td:nth-child(1) {
+      width: 8%;
+      font-weight: 500;
+    }
+    
+    td:nth-child(2) {
+      width: 25%;
+    }
+    
+    td:nth-child(3) {
+      width: 67%;
+    }
+  }
+  .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+  
+  .clean-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0; /* Only horizontal lines */
+      vertical-align: top;
+    }
+    
+    th {
+      font-weight: 600;
+      background-color: #f8f8f8;
+      border-bottom: 2px solid #ddd; /* Slightly thicker line under headers */
+    }
+    
+    tr:last-child td {
+      border-bottom: none; /* Remove bottom border from last row */
+    }
+    
+    /* Column width adjustments */
+    td:nth-child(1) { 
+      width: 10%;
+      font-weight: 500;
+    }
+    td:nth-child(2) { width: 25%; }
+    td:nth-child(3) { width: 65%; }
+  }
+  /* CSS to remove vertical lines */
+  .table-container {
+    overflow-x: auto;
+    margin: 1rem 0;
+  }
+  
+  .instructions-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    
+    /* Remove all vertical borders */
+    th, td {
+      padding: 12px 16px;
+      text-align: left;
+      border-left: none;
+      border-right: none;
+      border-top: none;
+      border-bottom: 1px solid #e0e0e0; /* Keep only horizontal line */
+    }
+    
+    /* Header styling */
+    th {
+      font-weight: 600;
+      background-color: #f8f8f8;
+      border-bottom: 2px solid #ddd; /* Slightly thicker line for header */
+    }
+    
+    /* Remove border from last row */
+    tr:last-child td {
+      border-bottom: none;
+    }
+    
+    /* Column width adjustments */
+    td:nth-child(1) { width: 10%; }
+    td:nth-child(2) { width: 25%; }
+    td:nth-child(3) { width: 65%; }
+  }
+  /* CSS Styles */
+  .import-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .import-card, .instructions-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e0e0e0;
+    padding: 1.5rem;
+  }
+  
+  .file-input-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  
+  
+  
+  
+  .table-container {
+    overflow-x: auto;
+    margin: 1rem 0;
+  }
+  
+  .instructions-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+  
+  .instructions-table th, 
+  .instructions-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+    vertical-align: top;
+  }
+  
+  .instructions-table th {
+    font-weight: 600;
+    background-color: #f8f8f8;
+    border-bottom: 2px solid #ddd;
+  }
+  
+  .instruction-detail {
+    color: #777;
+    display: block;
+    margin-top: 4px;
+    font-size: 0.85em;
+    line-height: 1.4;
+  }
+  
+  /* Remove border from last row */
+  .instructions-table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  /* Column width adjustments */
+  .instructions-table td:nth-child(1) { 
+    width: 10%;
+    font-weight: 500;
+  }
+  .instructions-table td:nth-child(2) { width: 25%; }
+  .instructions-table td:nth-child(3) { width: 65%; }

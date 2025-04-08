@@ -1,0 +1,24 @@
+<div class="roles-table-container">
+  <h2>Roles Table</h2>
+  <button (click)="navigateToRoles()" class="add-role-btn">Add +</button>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Role ID</th>
+        <th>Role Name</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let role of roles; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ role['roleName'] }}</td>  <!-- Access roleName using ['roleName'] -->
+        <td>
+          <button (click)="editRole(role['id'])">Edit</button>  <!-- Access id using ['id'] -->
+          <button (click)="deleteRole(role['id'])">Delete</button>  <!-- Access id using ['id'] -->
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

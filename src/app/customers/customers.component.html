@@ -1,0 +1,296 @@
+<!-- Customer Management Section -->
+<div class="customer-management">
+  <div class="header-section">
+    <h2>Manage your Customers</h2>
+    <button class="add-btn" (click)="toggleForm()">
+      <span class="icon">+</span> Add Customer
+    </button>
+  </div>
+  
+  <div class="filter-section">
+    <div class="filter-controls">
+      <button class="filter-toggle">
+        <i class="filter-icon"></i> Filters
+      </button>
+      
+      <div class="table-controls">
+        <span>Show</span>
+        <select [(ngModel)]="pageSize" (change)="onPageSizeChange()">
+          <option value="10">10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+        <span>entries</span>
+        
+        <div class="export-controls">
+          <button class="export-btn" (click)="exportCSV()">Export CSV</button>
+          <button class="export-btn" (click)="exportExcel()">Export Excel</button>
+          <button class="export-btn" (click)="printTable()">Print</button>
+          <button class="export-btn" (click)="toggleColumnVisibility()">Column visibility</button>
+          <button class="export-btn" (click)="exportPDF()">Export PDF</button>
+        </div>
+        
+        <div class="search-box">
+          <input type="text" [(ngModel)]="searchTerm" (keyup)="applyFilter()" placeholder="Search...">
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Customer Table -->
+  <div class="table-container">
+    <table class="customer-table">
+      <thead>
+        <tr>
+          <th>Action</th>
+          <th (click)="sortTable('contactId')">Contact ID
+            <span class="sort-icon" *ngIf="sortColumn === 'contactId'">
+              {{ sortDirection === 'asc' ? '▲' : '▼' }}
+            </span>
+          </th>
+          <th (click)="sortTable('businessName')">Business Name
+            <span class="sort-icon" *ngIf="sortColumn === 'businessName'">
+              {{ sortDirection === 'asc' ? '▲' : '▼' }}
+            </span>
+          </th>
+          <th (click)="sortTable('fullName')">Name
+            <span class="sort-icon" *ngIf="sortColumn === 'fullName'">
+              {{ sortDirection === 'asc' ? '▲' : '▼' }}
+            </span>
+          </th>
+          <th (click)="sortTable('email')">Email
+            <span class="sort-icon" *ngIf="sortColumn === 'email'">
+              {{ sortDirection === 'asc' ? '▲' : '▼' }}
+            </span>
+          </th>
+          <th (click)="sortTable('taxNumber')">Tax number
+            <span class="sort-icon" *ngIf="sortColumn === 'taxNumber'">
+              {{ sortDirection === 'asc' ? '▲' : '▼' }}
+            </span>
+          </th>
+          <th (click)="sortTable('creditLimit')">Credit Limit
+            <span class="sort-icon" *ngIf="sortColumn === 'creditLimit'">
+              {{ sortDirection === 'asc' ? '▲' : '▼' }}
+            </span>
+          </th>
+          <th (click)="sortTable('payTerm')">Pay term
+            <span class="sort-icon" *ngIf="sortColumn === 'payTerm'">
+              {{ sortDirection === 'asc' ? '▲' : '▼' }}
+            </span>
+          </th>
+          <th (click)="sortTable('openingBalance')">Opening Balance
+            <span class="sort-icon" *ngIf="sortColumn === 'openingBalance'">
+              {{ sortDirection === 'asc' ? '▲' : '▼' }}
+            </span>
+          </th>
+          <th (click)="sortTable('advanceBalance')">Advance Balance
+            <span class="sort-icon" *ngIf="sortColumn === 'advanceBalance'">
+              {{ sortDirection === 'asc' ? '▲' : '▼' }}
+            </span>
+          </th>
+          <th (click)="sortTable('createdAt')">Added On
+            <span class="sort-icon" *ngIf="sortColumn === 'createdAt'">
+              {{ sortDirection === 'asc' ? '▲' : '▼' }}
+            </span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let customer of filteredCustomers">
+          <td class="action-cell">
+            <div class="dropdown">
+              <button class="dropdown-btn">Actions</button>
+              <div class="dropdown-content">
+                <a (click)="editCustomer(customer)">Edit</a>
+                <a (click)="deleteCustomer(customer.id)">Delete</a>
+                <a (click)="viewCustomerDetails(customer.id)">View</a>
+              </div>
+            </div>
+          </td>
+          <td>{{ customer.contactId }}</td>
+          <td>{{ customer.businessName || '-' }}</td>
+          <td>
+            <span *ngIf="customer.firstName || customer.lastName">
+              {{ customer.firstName }} {{ customer.middleName ? customer.middleName + ' ' : '' }}{{ customer.lastName }}
+            </span>
+            <span *ngIf="!customer.firstName && !customer.lastName">-</span>
+          </td>
+          <td>{{ customer.email || '-' }}</td>
+          <td>{{ customer.taxNumber || '-' }}</td>
+          <td>{{ customer.creditLimit ? '₹ ' + customer.creditLimit : 'No Limit' }}</td>
+          <td>{{ customer.payTerm || '-' }}</td>
+          <td>{{ customer.openingBalance ? '₹ ' + customer.openingBalance.toFixed(2) : '₹ 0.00' }}</td>
+          <td>{{ customer.advanceBalance ? '₹ ' + customer.advanceBalance.toFixed(2) : '₹ 0.00' }}</td>
+          <td>{{ customer.createdAt | date:'MM/dd/yyyy' }}</td>
+        </tr>
+        <tr *ngIf="filteredCustomers.length === 0">
+          <td colspan="11" class="no-data">No customers found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <!-- Pagination -->
+  <div class="pagination-container">
+    <div class="pagination-info">
+      Showing {{ startIndex + 1 }} to {{ endIndex }} of {{ totalItems }} entries
+    </div>
+    <div class="pagination-controls">
+      <button [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">Previous</button>
+      <span *ngFor="let page of pages" [class.active]="page === currentPage" (click)="goToPage(page)">{{ page }}</span>
+      <button [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">Next</button>
+    </div>
+  </div>
+</div>
+
+<!-- Customer Form (Pop-up) -->
+<div *ngIf="showForm" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" (click)="toggleForm()">&times;</span>
+    <h2>{{ editingCustomerId ? 'Edit Customer' : 'Add Customer' }}</h2>
+    
+    <form (ngSubmit)="saveCustomer()">
+      <!-- Contact Type Dropdown -->
+      <div class="form-group">
+        <label for="contactType">Contact Type:</label>
+        <select [(ngModel)]="customerData.contactType" name="contactType" id="contactType" (change)="onContactTypeChange()" class="form-control">
+          <option value="Customer">Customer</option>
+          <option value="Supplier">Supplier</option>
+          <option value="Both">Both Supplier and Customer</option>
+        </select>
+      </div>
+      
+      <!-- Radio Buttons for Individual or Business -->
+      <div class="form-group radio-group">
+        <label>Contact Type:</label>
+        <div class="radio-options">
+          <label>
+            <input type="radio" name="isIndividual" [(ngModel)]="isIndividual" [value]="true"> Individual
+          </label>
+          <label>
+            <input type="radio" name="isIndividual" [(ngModel)]="isIndividual" [value]="false"> Business
+          </label>
+        </div>
+      </div>
+
+      <!-- Common Fields -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="contactId">Contact ID:</label>
+          <input type="text" [(ngModel)]="customerData.contactId" name="contactId" id="contactId" placeholder="Enter Contact ID" class="form-control">
+        </div>
+        
+        <div class="form-group">
+          <label for="mobile">Mobile:</label>
+          <input type="text" [(ngModel)]="customerData.mobile" name="mobile" id="mobile" required placeholder="Enter Mobile Number" class="form-control">
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="alternateContact">Alternate Contact:</label>
+          <input type="text" [(ngModel)]="customerData.alternateContact" name="alternateContact" id="alternateContact" placeholder="Enter Alternate Contact" class="form-control">
+        </div>
+        
+        <div class="form-group">
+          <label for="landline">Landline:</label>
+          <input type="text" [(ngModel)]="customerData.landline" name="landline" id="landline" placeholder="Enter Landline" class="form-control">
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" [(ngModel)]="customerData.email" name="email" id="email" placeholder="Enter Email" class="form-control">
+        </div>
+        
+        <div class="form-group">
+          <label for="assignedTo">Assigned To:</label>
+          <input type="text" [(ngModel)]="customerData.assignedTo" name="assignedTo" id="assignedTo" placeholder="Enter Assigned To" class="form-control">
+        </div>
+      </div>
+
+      <!-- Individual Specific Fields -->
+      <div *ngIf="isIndividual" class="individual-fields">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="prefix">Prefix:</label>
+            <input type="text" [(ngModel)]="customerData.prefix" name="prefix" id="prefix" placeholder="Mr/Mrs/Ms" class="form-control">
+          </div>
+          
+          <div class="form-group">
+            <label for="firstName">First Name:</label>
+            <input type="text" [(ngModel)]="customerData.firstName" name="firstName" id="firstName" required placeholder="Enter First Name" class="form-control">
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="middleName">Middle Name:</label>
+            <input type="text" [(ngModel)]="customerData.middleName" name="middleName" id="middleName" placeholder="Enter Middle Name" class="form-control">
+          </div>
+          
+          <div class="form-group">
+            <label for="lastName">Last Name:</label>
+            <input type="text" [(ngModel)]="customerData.lastName" name="lastName" id="lastName" placeholder="Enter Last Name" class="form-control">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="dob">Date of Birth:</label>
+          <input type="date" [(ngModel)]="customerData.dob" name="dob" id="dob" class="form-control">
+        </div>
+      </div>
+
+      <!-- Business Specific Fields -->
+      <div *ngIf="!isIndividual" class="business-fields">
+        <div class="form-group">
+          <label for="businessName">Business Name:</label>
+          <input type="text" [(ngModel)]="customerData.businessName" name="businessName" id="businessName" required placeholder="Enter Business Name" class="form-control">
+        </div>
+      </div>
+
+      <!-- More Information Toggle -->
+      <div class="form-group more-info-toggle">
+        <button type="button" (click)="toggleMoreInfo()" class="toggle-btn">
+          {{ showMoreInfo ? 'Hide Additional Information' : 'Show More Information' }}
+        </button>
+      </div>
+
+      <!-- More Information Fields -->
+      <div *ngIf="showMoreInfo" class="more-info-fields">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="taxNumber">Tax Number:</label>
+            <input type="text" [(ngModel)]="customerData.taxNumber" name="taxNumber" id="taxNumber" placeholder="Enter Tax Number" class="form-control">
+          </div>
+          
+          <div class="form-group">
+            <label for="openingBalance">Opening Balance:</label>
+            <input type="number" [(ngModel)]="customerData.openingBalance" name="openingBalance" id="openingBalance" placeholder="0" class="form-control">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="payTerm">Pay Term:</label>
+          <select [(ngModel)]="customerData.payTerm" name="payTerm" id="payTerm" class="form-control">
+            <option value="Immediate">Immediate</option>
+            <option value="Net 30">Net 30</option>
+            <option value="Net 60">Net 60</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="address">Address:</label>
+          <textarea [(ngModel)]="customerData.address" name="address" id="address" placeholder="Enter Address" class="form-control"></textarea>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" (click)="toggleForm()" class="cancel-btn">Cancel</button>
+        <button type="submit" class="save-btn">{{ editingCustomerId ? 'Update' : 'Save' }}</button>
+      </div>
+    </form>
+  </div>
+</div>

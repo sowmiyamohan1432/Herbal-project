@@ -1,0 +1,72 @@
+<div class="import-container">
+    <h2>Import Opening Stock</h2>
+    <!-- Left Side: File Upload Section -->
+    <div class="import-card">
+     
+      <div class="import-section">
+        <div class="file-input-container">
+          <label class="file-label" for="file">
+            <h6>File To Import: </h6>
+            <span class="file-button">Choose File</span>
+            <span class="file-name">{{ selectedFile?.name || 'No file chosen' }}</span>
+          </label>
+          <input type="file" id="file" class="file-input" (change)="onFileSelect($event)">
+        </div>
+        <button class="submit-btn" (click)="onSubmit()">Submit</button>
+        <button class="download-btn" (click)="downloadTemplate()">
+          <span class="material-icons">download</span> Download template file
+        </button>
+      </div>
+    </div>
+  
+    <!-- Right Side: Instructions Section -->
+    <div class="instructions-card">
+      <h5>Instructions</h5>
+      <p><strong>Follow the instructions carefully before importing the file.</strong></p>
+      <p>The columns of the file should be in the following order:</p>
+  
+      <div class="table-container">
+        <table class="instructions-table">
+          <thead>
+            <tr>
+              <th>Column Number</th>
+              <th>Column Name</th>
+              <th>Instruction</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>SKU <span class="required">(Required)</span></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Location <span class="optional">(Optional)</span></td>
+              <td>Name of the business location</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Quantity <span class="required">(Required)</span></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>Unit Cost (Before Tax) <span class="required">(Required)</span></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>Lot Number <span class="optional">(Optional)</span></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td>Expiry Date <span class="optional">(Optional)</span></td>
+              <td>Stock expiry date in <strong>mm/dd/yyyy</strong> format (e.g., 03/25/2025)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>

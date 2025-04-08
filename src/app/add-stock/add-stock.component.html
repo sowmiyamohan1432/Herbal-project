@@ -1,0 +1,167 @@
+<form [formGroup]="stockForm" (ngSubmit)="onSubmit()">
+  <!-- First Container: Stock Info -->
+  <div class="container-fluid p-4">
+    <div class="card mb-4">
+      <div class="card-header">
+        <h2>Add Stock Transfer</h2>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label for="date" class="form-label">Date:*</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+              <input type="datetime-local" id="date" class="form-control" formControlName="date" required />
+            </div>
+            <div *ngIf="stockForm.get('date')?.invalid && stockForm.get('date')?.touched" class="text-danger small">
+              Date is required
+            </div>
+          </div>
+          
+          <div class="col-md-4 mb-3">
+            <label for="referenceNo" class="form-label">Reference No:</label>
+            <input type="text" id="referenceNo" class="form-control" formControlName="referenceNo" />
+          </div>
+          
+          <div class="col-md-4 mb-3">
+            <label for="status" class="form-label">Status:* <i class="fas fa-info-circle text-info"></i></label>
+            <select id="status" class="form-select" formControlName="status" required>
+              <option value="" disabled>Please Select</option>
+              <option value="pending">Pending</option>
+              <option value="completed">Completed</option>
+            </select>
+            <div *ngIf="stockForm.get('status')?.invalid && stockForm.get('status')?.touched" class="text-danger small">
+              Status is required
+            </div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="locationFrom" class="form-label">Location (From):*</label>
+              <input type="text" id="locationFrom" class="form-control" formControlName="locationFrom" placeholder="Enter location" required />
+              <div *ngIf="stockForm.get('locationFrom')?.invalid && stockForm.get('locationFrom')?.touched" class="text-danger small">
+                Location is required
+              </div>
+            </div>
+            
+            <div class="col-md-6 mb-3">
+              <label for="locationTo" class="form-label">Location (To):*</label>
+              <input type="text" id="locationTo" class="form-control" formControlName="locationTo" placeholder="Enter location" required />
+              <div *ngIf="stockForm.get('locationTo')?.invalid && stockForm.get('locationTo')?.touched" class="text-danger small">
+                Location is required
+              </div>
+            </div>
+          </div>
+    
+    <!-- Second Container: Product Table -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="mb-3">
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-search"></i></span>
+            <input type="text" class="form-control" placeholder="Search products for stock adjustment" />
+          </div>
+        </div>
+        
+        <div *ngIf="stockForm.get('products')?.invalid && stockForm.get('products')?.touched" class="alert alert-danger">
+          At least one valid product is required
+        </div>
+        
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead class="table-light">
+              <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Subtotal</th>
+                <th style="width: 50px;"></th>
+              </tr>
+            </thead>
+            <tbody formArrayName="products">
+              <tr *ngFor="let product of products.controls; let i = index" [formGroupName]="i">
+                <td>
+                  <input type="text" class="form-control" formControlName="product" placeholder="Product Name" />
+                  <div *ngIf="products.at(i).get('product')?.invalid && products.at(i).get('product')?.touched" class="text-danger small">
+                    Product name is required
+                  </div>
+                </td>
+                <td>
+                  <input type="number" class="form-control" formControlName="quantity" (input)="calculateSubtotal(i)" placeholder="Quantity" min="1" />
+                  <div *ngIf="products.at(i).get('quantity')?.invalid && products.at(i).get('quantity')?.touched" class="text-danger small">
+                    Valid quantity is required
+                  </div>
+                </td>
+                <td>
+                  <input type="number" class="form-control" formControlName="unitPrice" (input)="calculateSubtotal(i)" placeholder="Unit Price" min="0.01" step="0.01" />
+                  <div *ngIf="products.at(i).get('unitPrice')?.invalid && products.at(i).get('unitPrice')?.touched" class="text-danger small">
+                    Valid price is required
+                  </div>
+                </td>
+                <td>{{ getSubtotal(i) | currency }}</td>
+                <td>
+                  <button type="button" (click)="removeProduct(i)" class="btn btn-sm btn-outline-danger border-1" style="background: transparent;">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="3" class="text-end fw-bold">Total:</td>
+                <td>{{ totalAmount | currency }}</td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        
+        <button type="button" (click)="addProduct()" class="btn btn-primary">
+          <i class="fas fa-plus"></i> Add Product
+        </button>
+      </div>
+    </div>
+    
+    <!-- Third Container: Shipping and Notes -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="shippingCharges" class="form-label">Shipping Charges:</label>
+            <input type="number" id="shippingCharges" class="form-control" formControlName="shippingCharges" min="0" step="0.01" />
+            <div *ngIf="stockForm.get('shippingCharges')?.invalid && stockForm.get('shippingCharges')?.touched" class="text-danger small">
+              Must be 0 or greater
+            </div>
+          </div>
+          
+          <div class="col-md-6 mb-3">
+            <label for="additionalNotes" class="form-label">Additional Notes:</label>
+            <textarea id="additionalNotes" class="form-control" formControlName="additionalNotes" rows="3"></textarea>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-12 text-end">
+            <h5>Total Amount: <span class="fw-bold">{{ (totalAmount + (stockForm.value.shippingCharges || 0)) | currency }}</span></h5>
+          </div>
+        </div>
+        
+        <div class="row mt-3">
+          <div class="col-12 text-center">
+            <button type="submit" [disabled]="isSubmitting" class="btn btn-lg btn-primary px-5">
+              <span *ngIf="!isSubmitting">Save</span>
+              <span *ngIf="isSubmitting">
+                <i class="fas fa-spinner fa-spin"></i> Saving...
+              </span>
+            </button>
+          </div>
+        </div>
+        
+        <div *ngIf="submitError" class="alert alert-danger mt-3">
+          {{ submitError }}
+        </div>
+      </div>
+    </div>
+  </div>

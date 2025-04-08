@@ -1,0 +1,100 @@
+<p>users works!</p>
+<div class="container">
+    <div class="header">
+      <h1>Users</h1>
+      <span class="manage-link">Manage users</span>
+    </div>
+    
+    <div class="users-panel">
+      <h2>All users</h2>
+      
+      <div class="action-bar">
+        <div class="entries-section">
+          <span>Show</span>
+          <select [(ngModel)]="entries">
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+          <span>entries</span>
+        </div>
+        
+        <div class="export-buttons">
+          <button class="btn btn-outline" (click)="exportCSV()">
+            <i class="fas fa-file-csv"></i> Export CSV
+          </button>
+          <button class="btn btn-outline" (click)="exportExcel()">
+            <i class="fas fa-file-excel"></i> Export Excel
+          </button>
+          <button class="btn btn-outline" (click)="print()">
+            <i class="fas fa-print"></i> Print
+          </button>
+          <button class="btn btn-outline" (click)="setColumnVisibility()">
+            <i class="fas fa-columns"></i> Column visibility
+          </button>
+          <button class="btn btn-outline" (click)="exportPDF()">
+            <i class="fas fa-file-pdf"></i> Export PDF
+          </button>
+        </div>
+        
+        <div class="search-container">
+          <input type="text" placeholder="Search..." (input)="search($event)" />
+        </div>
+        
+        <button class="btn btn-primary add-button" (click)="goToAddUserPage()">
+          <i class="fas fa-plus"></i> Add
+        </button>
+      </div>
+      
+      <table class="user-table">
+        <thead>
+          <tr>
+            <th>Username <i class="fas fa-sort"></i></th>
+            <th>Name <i class="fas fa-sort"></i></th>
+            <th>Role <i class="fas fa-sort"></i></th>
+            <th>Email <i class="fas fa-sort"></i></th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of getPaginatedUsers()">
+            <td>{{ user.username }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.role }}</td>
+            <td>{{ user.email }}</td>
+            <td class="action-buttons">
+              <button class="btn btn-edit" (click)="editUser(user.id)">
+                <i class="fas fa-edit"></i> Edit
+              </button>
+           
+              <button class="btn btn-delete" (click)="deleteUser(user.id)">
+                <i class="fas fa-trash"></i> Delete
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="users.length === 0">
+            <td colspan="5" class="no-data">No users found.</td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <div class="pagination">
+        <div class="showing-info">
+          Showing {{ (currentPage - 1) * entries + 1 }} to {{ 
+            currentPage * entries > totalEntries ? totalEntries : currentPage * entries 
+          }} of {{ totalEntries }} entries
+        </div>
+        <div class="page-buttons">
+          <button [disabled]="currentPage === 1" (click)="previousPage()" class="btn pagination-btn">
+            Previous
+          </button>
+          <button class="btn pagination-btn active">{{ currentPage }}</button>
+          <button [disabled]="currentPage === totalPages" (click)="nextPage()" class="btn pagination-btn">
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

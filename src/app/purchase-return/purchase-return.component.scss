@@ -1,0 +1,139 @@
+.purchase-return-container {
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-top: 5%;
+  
+    h2 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+  
+    .filters-section {
+      margin-bottom: 20px;
+  
+      h3 {
+        color: #555;
+        margin-bottom: 5px;
+      }
+  
+      h4 {
+        color: #666;
+        font-weight: normal;
+        margin-top: 0;
+      }
+    }
+  
+    .table-controls {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      align-items: center;
+  
+      .left-controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+  
+        .entries-select {
+          padding: 5px;
+          border-radius: 4px;
+          border: 1px solid #ddd;
+        }
+  
+        .export-btn {
+          background: #f8f9fa;
+          border: 1px solid #ddd;
+          padding: 5px 10px;
+          border-radius: 4px;
+          cursor: pointer;
+          color: #333;
+  
+          &:hover {
+            background: #e9ecef;
+          }
+        }
+      }
+  
+      .right-controls {
+        .search-input {
+          padding: 5px 10px;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          width: 200px;
+        }
+      }
+    }
+  
+    .table-responsive {
+      overflow-x: auto;
+    }
+  
+    .purchase-return-table {
+      width: 100%;
+      border-collapse: collapse;
+  
+      th, td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+  
+      th {
+        background-color: #f8f9fa;
+        font-weight: 600;
+        color: #333;
+      }
+  
+      .no-data {
+        text-align: center;
+        color: #777;
+        padding: 20px;
+      }
+  
+      tfoot {
+        td {
+          background-color: #f8f9fa;
+          padding: 10px 15px;
+        }
+  
+        .table-footer {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+  
+          .footer-left {
+            span {
+              font-weight: 600;
+            }
+          }
+  
+          .footer-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+  
+            span {
+              color: #666;
+            }
+  
+            .page-btn {
+              background: #f8f9fa;
+              border: 1px solid #ddd;
+              padding: 5px 10px;
+              border-radius: 4px;
+              cursor: pointer;
+  
+              &:disabled {
+                color: #aaa;
+                cursor: not-allowed;
+              }
+  
+              &:not(:disabled):hover {
+                background: #e9ecef;
+              }
+            }
+          }
+        }
+      }
+    }
+  }

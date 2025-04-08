@@ -1,0 +1,106 @@
+<div class="container-fluid">
+    <div class="card my-3">
+      <div class="card-header bg-light py-3 d-flex justify-content-between align-items-center">
+        <h4 class="mb-0">Purchase Details</h4>
+        <button class="btn btn-sm btn-outline-secondary" routerLink="/list-purchase">
+          <i class="fas fa-arrow-left me-1"></i> Back to List
+        </button>
+      </div>
+  
+      <div class="card-body">
+        <div *ngIf="purchase">
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <h6 class="mb-3">Basic Information</h6>
+              <div class="table-responsive">
+                <table class="table table-sm table-borderless">
+                  <tbody>
+                    <tr>
+                      <th class="w-50">Reference No:</th>
+                      <td>{{ purchase.referenceNo || 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                      <th>Date:</th>
+                      <td>{{ purchase.purchaseDate || 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                      <th>Supplier:</th>
+                      <td>{{ purchase.supplier || 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                      <th>Location:</th>
+                      <td>{{ purchase.businessLocation || 'N/A' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <h6 class="mb-3">Status Information</h6>
+              <div class="table-responsive">
+                <table class="table table-sm table-borderless">
+                  <tbody>
+                    <tr>
+                      <th class="w-50">Purchase Status:</th>
+                      <td>{{ purchase.purchaseStatus || 'Unknown' }}</td>
+                    </tr>
+                    <tr>
+                      <th>Payment Status:</th>
+                      <td>{{ purchase.paymentStatus || 'Unknown' }}</td>
+                    </tr>
+                    <tr>
+                      <th>Grand Total:</th>
+                      <td>₹ {{ purchase.grandTotal || '0.00' }}</td>
+                    </tr>
+                    <tr>
+                      <th>Payment Due:</th>
+                      <td>₹ {{ purchase.paymentDue || '0.00' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-12">
+              <h6 class="mb-3">Items</h6>
+              <div class="table-responsive">
+                <table class="table table-sm table-bordered">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Item</th>
+                      <th>Quantity</th>
+                      <th>Unit Price</th>
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of purchase.items || []">
+                      <td>{{ item.name || 'N/A' }}</td>
+                      <td>{{ item.quantity || '0' }}</td>
+                      <td>₹ {{ item.unitPrice || '0.00' }}</td>
+                      <td>₹ {{ (item.quantity * item.unitPrice) || '0.00' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div *ngIf="isLoading" class="text-center mt-5">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+  
+        <div *ngIf="!isLoading && !purchase" class="text-center mt-5">
+          <p>No purchase data found</p>
+          <button class="btn btn-primary" routerLink="/list-purchase">
+            <i class="fas fa-arrow-left me-1"></i> Back to Purchases
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

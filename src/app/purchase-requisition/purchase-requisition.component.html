@@ -1,0 +1,164 @@
+<!-- purchase-requisition.component.html -->
+<div class="purchase-requisition-container">
+  <h1>Purchase Requisition</h1>
+  <p>A purchase requisition is a document that an employee creates to request a purchase of goods or services.</p>
+
+  <div class="filter-section">
+    <button class="filter-btn" (click)="toggleFilters()">
+      <i class="fa fa-filter"></i> Filters
+    </button>
+  </div>
+
+  <!-- Filter Panel -->
+  <div class="filters-panel" *ngIf="showFilters">
+    <div class="filters-header">
+      <span class="filters-title">Filters</span>
+    </div>
+    <div class="filters-row">
+      <div class="filter-group">
+        <label>Business Location:</label>
+        <select [(ngModel)]="selectedLocation">
+          <option *ngFor="let location of businessLocations" [value]="location">{{ location }}</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Status:</label>
+        <select [(ngModel)]="selectedStatus">
+          <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Date Range:</label>
+        <input type="text" [(ngModel)]="dateRange" placeholder="04/01/2025 - 03/31/2026">
+      </div>
+
+      <div class="filter-group">
+        <label>Required by date:</label>
+        <input type="text" [(ngModel)]="requiredByDate" placeholder="Select a date range">
+      </div>
+    </div>
+
+    <div class="filter-buttons">
+      <button class="filter-apply-btn" (click)="applyFilters()">Apply</button>
+      <button class="filter-reset-btn" (click)="resetFilters()">Reset</button>
+    </div>
+  </div>
+
+  <div class="table-container">
+    <div class="table-header">
+      <div class="entries-section">
+        <label>Show 
+          <select>
+            <option>25</option>
+            <option>50</option>
+            <option>100</option>
+          </select>
+          entries
+        </label>
+      </div>
+
+      <div class="export-buttons">
+        <button class="export-btn" (click)="exportCSV()">
+          <i class="fa fa-file-csv"></i> Export CSV
+        </button>
+        <button class="export-btn" (click)="exportExcel()">
+          <i class="fa fa-file-excel"></i> Export Excel
+        </button>
+        <button class="export-btn" (click)="print()">
+          <i class="fa fa-print"></i> Print
+        </button>
+        <button class="export-btn" (click)="toggleColumnVisibility()">
+          <i class="fa fa-columns"></i> Column visibility
+        </button>
+        <button class="export-btn" (click)="exportPDF()">
+          <i class="fa fa-file-pdf"></i> Export PDF
+        </button>
+      </div>
+
+      <!-- Column Visibility Dropdown -->
+      <div class="column-visibility-dropdown" *ngIf="showColumnVisibility">
+        <div class="dropdown-header">
+       
+        </div>
+        <div class="dropdown-content">
+        
+          <ul class="column-list">
+            <li *ngFor="let column of columns" class="column-item">
+              <label>
+                <input type="checkbox" 
+                       [checked]="column.visible" 
+                       (change)="updateColumnVisibility(column)"
+                       [disabled]="column.visible && !hasVisibleColumns()">
+                {{ column.name }}
+              </label>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="search-section">
+        <input type="text" placeholder="Search..." class="search-input">
+      </div>
+
+      <button class="add-btn" (click)="navigateToAddRequisition()">
+        <i class="fa fa-plus"></i> Add
+      </button>
+    </div>
+
+    <div class="table-responsive">
+      <table class="requisition-table">
+        <thead>
+          <tr>
+            <th *ngIf="columns[0].visible">Date <i class="fa fa-sort"></i></th>
+            <th *ngIf="columns[1].visible">Reference No <i class="fa fa-sort"></i></th>
+            <th *ngIf="columns[2].visible">Location <i class="fa fa-sort"></i></th>
+            <th *ngIf="columns[3].visible">Status <i class="fa fa-sort"></i></th>
+            <th *ngIf="columns[4].visible">Required by date <i class="fa fa-sort"></i></th>
+            <th *ngIf="columns[5].visible">Added By <i class="fa fa-sort"></i></th>
+            <th>Action</th> <!-- Action column is always visible -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="rows.length === 0">
+            <td colspan="7" class="no-data">No data available in table</td>
+          </tr>
+          <tr *ngFor="let row of rows">
+            <td *ngIf="columns[0].visible">{{ row.date }}</td>
+            <td *ngIf="columns[1].visible">{{ row.referenceNo }}</td>
+            <td *ngIf="columns[2].visible">{{ row.location }}</td>
+            <td *ngIf="columns[3].visible">
+              <span class="status-badge" [ngClass]="row.status | lowercase">
+                {{ row.status }}
+              </span>
+            </td>
+            <td *ngIf="columns[4].visible">{{ row.requiredByDate }}</td>
+            <td *ngIf="columns[5].visible">{{ row.addedBy }}</td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn-view" title="View" (click)="viewRequisition(row.id)">
+                  <i class="fa fa-eye"></i>
+                </button>
+              
+                <button class="btn-delete" title="Delete" (click)="deleteRequisition(row.id)">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-footer">
+      <div class="showing-entries">
+        Showing 0 to 0 of 0 entries
+      </div>
+      <div class="pagination">
+        <button class="page-btn" disabled>Previous</button>
+        <button class="page-btn" disabled>Next</button>
+      </div>
+    </div>
+  </div>
+</div>

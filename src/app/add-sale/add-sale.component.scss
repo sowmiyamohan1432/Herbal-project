@@ -1,0 +1,380 @@
+/* Main container styles */
+.container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+h2{
+  margin-top: 5%;
+}
+/* Card styles */
+.card {
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  border: 1px solid #e7e7e7;
+}
+
+.card-header {
+  background-color: #f8f9fa;
+  padding: 12px 15px;
+  font-weight: 600;
+  border-bottom: 1px solid #e7e7e7;
+}
+
+.card-body {
+  padding: 15px;
+}
+
+/* Form styles */
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  font-weight: 500;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.form-control {
+  border-radius: 4px;
+  border: 1px solid #ced4da;
+  padding: 8px 12px;
+  font-size: 14px;
+  transition: border-color 0.15s ease-in-out;
+}
+
+.form-control:focus {
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Button styles */
+.btn {
+  border-radius: 4px;
+  font-weight: 500;
+  padding: 8px 16px;
+}
+
+.btn-primary {
+  background-color: #4e73df;
+  border-color: #4e73df;
+}
+
+.btn-primary:hover {
+  background-color: #3a60d5;
+  border-color: #3a60d5;
+}
+
+.btn-danger {
+  background-color: #e74a3b;
+  border-color: #e74a3b;
+}
+
+.btn-danger:hover {
+  background-color: #d53b2c;
+  border-color: #d53b2c;
+}
+
+.btn-secondary {
+  background-color: #858796;
+  border-color: #858796;
+}
+
+.btn-secondary:hover {
+  background-color: #717384;
+  border-color: #717384;
+}
+
+/* Product search bar styling */
+.input-group {
+  display: flex;
+  width: 100%;
+}
+
+.input-group .form-control {
+  flex: 1;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.input-group-append .btn {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  padding: 8px 12px;
+}
+
+/* Product table styling */
+.table {
+  margin-bottom: 1rem;
+  color: #212529;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 0.75rem;
+  vertical-align: middle;
+  border: 1px solid #e3e6f0;
+}
+
+.table thead th {
+  vertical-align: bottom;
+  background-color: #f8f9fa;
+  font-weight: 600;
+  border-bottom: 2px solid #e3e6f0;
+}
+
+.table tbody + tbody {
+  border-top: 2px solid #e3e6f0;
+}
+
+.table tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.table tfoot {
+  font-weight: 600;
+  background-color: #f8f9fa;
+}
+
+/* Responsive table */
+.table-responsive {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Product row input styling */
+.table input.form-control {
+  padding: 6px 8px;
+  height: auto;
+}
+
+/* Action buttons in table */
+.table .btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.76563rem;
+  line-height: 1.5;
+}
+
+/* Total row styling */
+.text-right {
+  text-align: right;
+}
+
+tfoot tr td {
+  font-weight: 600;
+}
+
+/* Browse button styling */
+.browse-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+
+
+/* Add expenses button styling */
+.add-expenses-btn {
+  background-color: #6f42c1;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.add-expenses-btn:hover {
+  background-color: #5e35b1;
+}
+
+/* Save buttons styling */
+.save-btn-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.save-btn {
+  margin-right: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 4px;
+}
+
+.save-btn-primary {
+  background-color: #063feb;
+  color: white;
+  border: none;
+}
+
+.save-btn-success {
+  background-color: #1cc88a;
+  color: white;
+  border: none;
+}
+
+/* Total payable styling */
+.total-payable {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: right;
+  margin-top: 15px;
+}
+
+/* Additional styling for product entry sections */
+.product-entry-section {
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.product-search {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.product-search input {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.product-search button {
+  background-color: #153db4;
+  color: white;
+  border: none;
+  width: 40px;
+  height: 38px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-search button:hover {
+  background-color: #3a60d5;
+}
+
+/* Shipping section styling */
+.shipping-section {
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.shipping-header {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.shipping-inputs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-gap: 15px;
+}
+
+/* Payment section styling */
+.payment-section {
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.payment-header {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.payment-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-gap: 15px;
+}
+
+/* Icon styling */
+.icon-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background-color: #f8f9fa;
+  border: 1px solid #e3e6f0;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+/* Validation message styling */
+.text-danger {
+  color: #e74a3b;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+/* Helper text styling */
+.text-muted {
+  color: #6c757d;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+/* Max file size notice */
+.file-constraints {
+  color: #6c757d;
+  font-size: 12px;
+  margin-top: 5px;
+}
+.product-adjustment {
+  .form-control {
+    border-radius: 6px;
+    box-shadow: none;
+  }
+
+  .input-group-text {
+    background-color: #fff;
+    border-right: 0;
+  }
+
+  .table {
+    th,
+    td {
+      vertical-align: middle;
+    }
+
+    tfoot td {
+      background-color: #f9f9f9;
+    }
+
+    .btn-outline-danger {
+      padding: 4px 8px;
+    }
+  }
+
+  .btn-primary {
+    background-color: #7209b7;
+    border-color: #7209b7;
+    font-weight: 500;
+    border-radius: 6px;
+  }
+}

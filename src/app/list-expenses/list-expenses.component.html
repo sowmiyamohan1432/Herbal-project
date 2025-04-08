@@ -1,0 +1,122 @@
+<div class="expenses-container">
+  <h1 class="expenses-title">Expenses</h1>
+  
+  <div class="filters-card">
+    <div class="filters-header">
+      <span class="filters-icon">
+        <i class="fa fa-filter"></i> Filters
+      </span>
+    </div>
+  </div>
+  
+  <div class="expenses-card">
+    <div class="expenses-header">
+      <h2 class="section-title">All expenses</h2>
+      <button class="btn-add" (click)="addNewExpense()">
+        <span class="add-icon">+</span> Add
+      </button>
+    </div>
+    
+    <div class="table-controls">
+      <div class="table-options">
+        <span>Show</span>
+        <select class="entries-select" (change)="changeEntriesPerPage($event)">
+          <option value="25">25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+        <span>entries</span>
+        
+        <button class="btn-export" (click)="exportCSV()">
+          <i class="fa fa-download"></i> Export CSV
+        </button>
+        <button class="btn-export" (click)="exportExcel()">
+          <i class="fa fa-file-excel"></i> Export Excel
+        </button>
+        <button class="btn-export" (click)="printTable()">
+          <i class="fa fa-print"></i> Print
+        </button>
+     
+        <button class="btn-export" (click)="exportPDF()">
+          <i class="fa fa-file-pdf"></i> Export PDF
+        </button>
+      </div>
+      
+      <div class="search-container">
+        <input type="text" class="search-input" placeholder="Search..." 
+               (input)="onSearch($event)" />
+      </div>
+    </div>
+    
+    <div class="table-container" id="print-section">
+      <table class="expenses-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Reference No</th>
+            <th>Recurring details</th>
+            <th>Expense Category</th>
+            <th>Sub category</th>
+            <th>Location</th>
+            <th>Payment Status</th>
+            <th>Tax</th>
+            <th>Total amount</th>
+            <th>Payment due</th>
+            <th>Expense for</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let expense of paginatedExpenses">
+            <td>{{ expense.date | date:'shortDate' }}</td>
+            <td>{{ expense.referenceNo || '-' }}</td>
+            <td>{{ '-' }}</td>
+            <td>{{ expense.expenseCategory || '-' }}</td>
+            <td>{{ '-' }}</td>
+            <td>{{ expense.businessLocation }}</td>
+            <td>{{ expense.paymentMethod || '-' }}</td>
+            <td>{{ '0.00' }}</td>
+            <td>₹ {{ expense.totalAmount || '0.00' }}</td>
+            <td>₹ {{ '0.00' }}</td>
+            <td>{{ '-' }}</td>
+            <td class="actions">
+           <!-- View button with a "view" icon -->
+<button (click)="viewExpense(expense.id!)" class="btn-action">
+  <i class="fa fa-eye"></i> 
+</button>
+
+              <button (click)="deleteExpense(expense.id!)" class="btn-action">
+                <i class="fa fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="filteredExpenses.length === 0">
+            <td colspan="12" class="no-data">No data available in table</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr class="total-row">
+            <td colspan="8">Total:</td>
+            <td>₹ {{ getTotalAmount() }}</td>
+            <td>₹ 0.00</td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    
+    <div class="pagination">
+      <div class="entries-info">
+        Showing {{ (paginatedExpenses.length > 0) ? ((currentPage - 1) * entriesPerPage + 1) : 0 }} 
+        to {{ getPaginatedEndIndex() }} 
+        of {{ totalEntries }} entries
+      </div>
+      
+      <div class="pagination-controls">
+        <button class="btn-page" [disabled]="currentPage === 1" (click)="previousPage()">Previous</button>
+        <button class="btn-page" [disabled]="currentPage * entriesPerPage >= totalEntries" (click)="nextPage()">Next</button>
+      </div>
+    </div>
+  </div>
+</div>
